@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="static/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
 </head>
 <body>
     <!-- Navigation -->
@@ -15,18 +14,10 @@
         <div class="nav-container">
             <a href="#home" class="nav-logo">Portfolio</a>
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#home" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#projects" class="nav-link">Projects</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contact</a>
-                </li>
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
             <div class="hamburger">
                 <span class="bar"></span>
@@ -35,20 +26,6 @@
             </div>
         </div>
     </nav>
-
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message flash-{{ category }}">
-                        <span>{{ message }}</span>
-                        <button class="flash-close">&times;</button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
 
     <!-- Hero Section -->
     <section id="home" class="hero">
@@ -92,30 +69,12 @@
                 <div class="skills">
                     <h3>Skills & Technologies</h3>
                     <div class="skills-grid">
-                        <div class="skill-item">
-                            <i class="fab fa-python"></i>
-                            <span>Python</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-js"></i>
-                            <span>JavaScript</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-html5"></i>
-                            <span>HTML5</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-css3-alt"></i>
-                            <span>CSS3</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-react"></i>
-                            <span>React</span>
-                        </div>
-                        <div class="skill-item">
-                            <i class="fab fa-git-alt"></i>
-                            <span>Git</span>
-                        </div>
+                        <div class="skill-item"><i class="fab fa-python"></i><span>Python</span></div>
+                        <div class="skill-item"><i class="fab fa-js"></i><span>JavaScript</span></div>
+                        <div class="skill-item"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                        <div class="skill-item"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                        <div class="skill-item"><i class="fab fa-react"></i><span>React</span></div>
+                        <div class="skill-item"><i class="fab fa-git-alt"></i><span>Git</span></div>
                     </div>
                 </div>
             </div>
@@ -134,9 +93,7 @@
             </div>
             <div class="projects-grid">
                 <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <i class="fas fa-globe"></i>
-                    </div>
+                    <div class="project-image"><i class="fas fa-globe"></i></div>
                     <div class="project-content">
                         <h3>E-Commerce Platform</h3>
                         <p>A full-stack e-commerce solution built with Python Flask and modern JavaScript.</p>
@@ -153,9 +110,7 @@
                 </div>
                 
                 <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
+                    <div class="project-image"><i class="fas fa-chart-bar"></i></div>
                     <div class="project-content">
                         <h3>Data Visualization Dashboard</h3>
                         <p>Interactive dashboard for data analysis with real-time charts and insights.</p>
@@ -172,9 +127,7 @@
                 </div>
                 
                 <div class="project-card" data-category="mobile">
-                    <div class="project-image">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
+                    <div class="project-image"><i class="fas fa-mobile-alt"></i></div>
                     <div class="project-content">
                         <h3>Task Management App</h3>
                         <p>Mobile-first task management application with offline capabilities.</p>
@@ -205,22 +158,14 @@
                         Whether you have a question or just want to say hello, feel free to reach out!
                     </p>
                     <div class="contact-methods">
-                        <div class="contact-method">
-                            <i class="fas fa-envelope"></i>
-                            <span>your.email@example.com</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fab fa-linkedin"></i>
-                            <span>linkedin.com/in/yourprofile</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fab fa-github"></i>
-                            <span>github.com/yourusername</span>
-                        </div>
+                        <div class="contact-method"><i class="fas fa-envelope"></i><span>your.email@example.com</span></div>
+                        <div class="contact-method"><i class="fab fa-linkedin"></i><span>linkedin.com/in/yourprofile</span></div>
+                        <div class="contact-method"><i class="fab fa-github"></i><span>github.com/yourusername</span></div>
                     </div>
                 </div>
                 
-                <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
+                <!-- For now action="#" -->
+                <form class="contact-form" id="contact-form" method="POST" action="#">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" id="name" name="name" required>
