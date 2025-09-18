@@ -287,10 +287,10 @@ body {
 }
 
 .profile-circle img {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
     border-radius: 50%;
-    object-fit: cover; /* keeps aspect ratio and fills circle */
+    object-fit: cover;
 }
 
 /* Sections */
