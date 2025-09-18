@@ -286,9 +286,11 @@ body {
     animation: float 6s ease-in-out infinite;
 }
 
-.profile-circle i {
-    font-size: 8rem;
-    color: white;
+.profile-circle img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover; /* keeps aspect ratio and fills circle */
 }
 
 /* Sections */
