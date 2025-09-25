@@ -442,6 +442,21 @@ body {
     font-size: 3rem;
 }
 
+.project-image {
+  height: 150px;
+  background: var(--gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* crop overflow */
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* fills nicely without distortion */
+}
+
 .project-content {
     padding: 2rem;
 }
