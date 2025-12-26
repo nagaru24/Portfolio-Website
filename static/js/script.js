@@ -18,20 +18,34 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Smooth scrolling for navigation links
+    // Smooth scrolling for navigation links (works across pages)
     navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 70; // Account for fixed nav
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
+        link.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (!href) return;
+
+            let url;
+            try {
+                url = new URL(href, window.location.origin);
+            } catch {
+                return;
             }
+
+            const samePage = url.pathname === window.location.pathname;
+            const hasHash = url.hash && url.hash.length > 1;
+            const targetEl = hasHash ? document.querySelector(url.hash) : null;
+
+            if (samePage && targetEl) {
+                // same page → smooth scroll
+                e.preventDefault();
+                const offsetTop = targetEl.offsetTop - 70; // adjust for fixed navbar
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+
+                // close mobile menu if open
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+            // else → link points to a different page, let browser navigate
         });
     });
 
@@ -56,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute('id');
-            
+
             if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
                 navLinks.forEach(link => {
                     link.classList.remove('active');
@@ -121,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const flashMessages = document.querySelectorAll('.flash-message');
     flashMessages.forEach(message => {
         const closeBtn = message.querySelector('.flash-close');
-        
+
         // Auto-hide after 5 seconds
         setTimeout(() => {
             message.style.opacity = '0';
@@ -145,18 +159,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
         const inputs = contactForm.querySelectorAll('input, textarea');
-        
+
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
                 this.parentNode.classList.add('focused');
             });
-            
+
             input.addEventListener('blur', function() {
                 if (this.value === '') {
                     this.parentNode.classList.remove('focused');
                 }
             });
-            
+
             // Add real-time validation feedback
             input.addEventListener('input', function() {
                 if (this.validity.valid) {
@@ -168,19 +182,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Form submission with loading state
-        contactForm.addEventListener('submit', function(e) {
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Re-enable button after form submission (handled by Flask redirect)
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
+        contactForm.addEventListener('submit', function (e) {
+        e.preventDefault(); // prevent normal page reload
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        // Collect form data
+        const formData = new FormData(contactForm);
+
+        // Send via fetch to your Flask endpoint
+        fetch('/contact', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('✅ Thank you for reaching out! Your message has been sent.');
+                contactForm.reset();
+            } else {
+                alert('❗ Something went wrong. Please try again.');
+            }
+        })
+        .catch(() => {
+            alert('❗ Network error. Please try again.');
+        })
+        .finally(() => {
+            submitBtn.textContent = 'Send Message';
+            submitBtn.disabled = false;
         });
+      });
+
     }
 
     // Parallax effect for hero section
@@ -188,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrolled = window.pageYOffset;
         const hero = document.querySelector('.hero');
         const heroContent = document.querySelector('.hero-content');
-        
+
         if (hero) {
             const rate = scrolled * -0.5;
             hero.style.transform = `translateY(${rate}px)`;
@@ -220,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-10px) scale(1.02)';
         });
-        
+
         card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
@@ -250,9 +283,9 @@ document.addEventListener('DOMContentLoaded', function() {
             z-index: 1000;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         `;
-        
+
         document.body.appendChild(backToTopBtn);
-        
+
         window.addEventListener('scroll', () => {
             if (window.scrollY > 500) {
                 backToTopBtn.style.opacity = '1';
@@ -262,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 backToTopBtn.style.visibility = 'hidden';
             }
         });
-        
+
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
@@ -270,6 +303,27 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     };
-    
+
     createBackToTopBtn();
+
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+    if (accordionHeaders.length) {
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordion = header.parentElement;
+
+                // Close all other accordions
+                document.querySelectorAll('.accordion').forEach(item => {
+                    if (item !== accordion) {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Toggle the clicked accordion
+                accordion.classList.toggle('active');
+            });
+        });
+    }
+
 });

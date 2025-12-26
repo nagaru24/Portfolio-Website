@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Workout Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-matrix@2"></script>
+
+  <style>
+  .pr-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .pr-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pr-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .pr-title {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .muted {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 8px 0;
+  }
+
+  /* Styled selects (used by per-chart exercises + freq selector) */
+  .filter-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    padding: 6px 32px 6px 12px;
+    font-size: 0.9rem;
+    color: #e5e7eb;
+    background-color: #020617;
+    background-image:
+      linear-gradient(45deg, transparent 50%, #94a3b8 50%),
+      linear-gradient(135deg, #94a3b8 50%, transparent 50%);
+    background-position:
+      calc(100% - 14px) 55%,
+      calc(100% - 9px) 55%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    max-width: 180px;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.5);
+  }
+
+  /* per-card select inherits filter-select, just tightening max width if needed */
+  .pr-exercise-select {
+    max-width: 160px;
+  }
+
+  /* Frequency filter row (label + select nicely aligned) */
+  .freq-filter-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .filter-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #9ca3af;
+  }
+    .today-card {
+    border-radius: 16px;
+    padding: 16px 18px 18px;
+    margin-bottom: 32px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+  }
+
+  .today-card-rest {
+    background: rgba(15, 23, 42, 0.85);
+  }
+
+  .today-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .today-date {
+    font-size: 0.9rem;
+    color: #9ca3af;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(148, 163, 184, 0.7);
+    color: #e5e7eb;
+  }
+
+  .pill-live {
+    border-color: #22c55e;
+    color: #bbf7d0;
+  }
+
+  .today-body {
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
+  .today-group {
+    margin-bottom: 8px;
+  }
+
+  .today-group-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e5e7eb;
+    margin-bottom: 4px;
+  }
+
+  .today-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .today-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.9rem;
+    padding: 2px 0;
+  }
+
+  .today-exercise {
+    font-weight: 500;
+    color: #f9fafb;
+  }
+
+  .today-meta {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    white-space: nowrap;
+  }
+
+  .today-total {
+    margin-left: 8px;
+    color: #fbbf24;
+    font-weight: 500;
+  }
+
+  .today-rest-text {
+    font-size: 0.9rem;
+    color: #e5e7eb;
+    margin: 4px 0 10px;
+  }
+
+  .today-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .react-btn {
+    position: relative;
+    overflow: hidden;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.16s ease, transform 0.08s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+
+  .react-btn-positive { border-color: #22c55e; }
+  .react-btn-push     { border-color: #f97316; }
+  .react-btn-tease    { border-color: #eab308; }
+
+  .react-btn:hover {
+    background: #020617;
+    transform: translateY(-1px);
+  }
+
+  .react-btn:active {
+    transform: translateY(0);
+  }
+
+  .react-fill {
+    position: absolute;
+    inset: 0;
+    width: calc(var(--fill, 0) * 1%);
+    max-width: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(56, 189, 248, 0.85),
+      rgba(56, 189, 248, 0.45)
+    );
+    z-index: 0;
+    transition: width 0.25s ease;
+  }
+
+  .react-label {
+    position: relative;
+    z-index: 1;
+  }
+
+  .react-btn-selected {
+    box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.8);
+    border-color: #38bdf8;
+  }
+
+  .react-btn-positive { border-color: #22c55e; }
+  .react-btn-push     { border-color: #f97316; }
+  .react-btn-tease    { border-color: #eab308; }
+
+  .react-btn:hover {
+    background: #020617;
+    transform: translateY(-1px);
+  }
+
+  .react-btn:active {
+    transform: translateY(0);
+  }
+
+  @keyframes react-pop {
+    0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.0); }
+    40%  { transform: scale(1.06); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.4); }
+    100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.0); }
+  }
+
+  .react-btn-clicked {
+    animation: react-pop 0.25s ease-out;
+    border-color: #38bdf8;
+  }
+
+    .today-row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 900px) {
+    .today-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .today-main {
+    width: 100%;
+  }
+
+  .today-reactions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+    justify-content: center;  /* center vertically vs today card */
+  }
+
+  .today-card {
+    border-radius: 16px;
+    padding: 16px 18px 18px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+  }
+
+  .today-card-rest {
+    background: rgba(15, 23, 42, 0.85);
+  }
+
+  .today-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .today-date {
+    font-size: 0.9rem;
+    color: #9ca3af;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid rgba(148, 163, 184, 0.7);
+    color: #e5e7eb;
+  }
+
+  .pill-live {
+    border-color: #22c55e;
+    color: #bbf7d0;
+  }
+
+  .today-body {
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
+  .today-group {
+    margin-bottom: 8px;
+  }
+
+  /* bigger, more prominent target name */
+  .today-group-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f9fafb;
+    margin-bottom: 4px;
+  }
+
+  .today-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .today-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.9rem;
+    padding: 2px 0;
+  }
+
+  .today-exercise {
+    font-weight: 500;
+    color: #f9fafb;
+  }
+
+  .today-meta {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    white-space: nowrap;
+  }
+
+  .today-total {
+    margin-left: 8px;
+    color: #fbbf24;
+    font-weight: 500;
+  }
+
+  .today-rest-text {
+    font-size: 0.9rem;
+    color: #e5e7eb;
+    margin: 4px 0 10px;
+  }
+
+  /* reaction buttons on the right */
+  .react-btn {
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.16s ease, transform 0.08s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+
+  .react-btn-positive {
+    border-color: #22c55e;
+  }
+
+  .react-btn-push {
+    border-color: #f97316;
+  }
+
+  .react-btn-tease {
+    border-color: #eab308;
+  }
+
+  .react-btn:hover {
+    background: #020617;
+    transform: translateY(-1px);
+  }
+
+  .react-btn:active {
+    transform: translateY(0);
+  }
+
+  /* click animation */
+  @keyframes react-pop {
+    0%   { transform: scale(1);   box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.0); }
+    40%  { transform: scale(1.06); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.4); }
+    100% { transform: scale(1);   box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.0); }
+  }
+
+  .react-btn-clicked {
+    animation: react-pop 0.25s ease-out;
+    border-color: #38bdf8;
+  }
+
+  .reactions-title {
+    font-size: 0.95rem;
+    color: #111827;  /* dark */
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+  }
+
+    .reactions-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reaction-form {
+    margin: 0;
+  }
+
+  .reaction-form-text {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .reaction-textarea {
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    background: #020617;
+    color: #e5e7eb;
+    font-size: 0.85rem;
+    padding: 8px 10px;
+    resize: vertical;
+    min-height: 70px;
+  }
+
+  .reaction-textarea::placeholder {
+    color: #64748b;
+    opacity: 0.9;
+  }
+
+  .reaction-submit-btn {
+    align-self: flex-end;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.6);
+    background: #0f172a;
+    color: #e5e7eb;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.08s ease;
+  }
+
+  .reaction-submit-btn:hover {
+    background: #020617;
+    transform: translateY(-1px);
+  }
+
+  .reaction-submit-btn:active {
+    transform: translateY(0);
+  }
+
+  /* base style for both thank-you and error */
+  .reaction-thanks {
+    font-size: 0.8rem;
+    color: #16a34a;
+    margin: 2px 0 0;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  /* when JS adds .visible, show it */
+  .reaction-thanks.visible {
+    opacity: 1;
+  }
+
+  /* error message color */
+  #feedback-empty {
+    color: #dc2626;
+  }
+
+  /* wrapper so thank-you and error share same slot */
+  .feedback-message {
+    position: relative;
+    height: 1.2em;       /* reserve space for one line */
+  }
+
+  /* stack the two <p> on top of each other */
+  .feedback-message .reaction-thanks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    text-align: left;
+  }
+</style>
+
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="https://nagaru24k.pythonanywhere.com/" class="nav-logo">
+            <img src="static/images/logo.png" alt="Nagaru.O Logo" class="logo-img">
+        </a>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#home" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#about" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#projects" class="nav-link">Projects</a></li>
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+    </div>
+</nav>
+
+  <section class="about" style="padding-top: 100px;">
+    <div class="container">
+      <h2 class="section-title">Path to the Peak</h2>
+
+      <div class="projects" style="padding-top: 40px;">
+          <div class="container">
+
+            <div class="today-row">
+              <div class="today-main">
+                <div class="today-card {% if not today_rows %}today-card-rest{% endif %}">
+                  <div class="today-header">
+                    <span class="pill {% if today_rows %}pill-live{% endif %}">
+                      {% if today_rows %}Today’s workout{% else %}No workout logged{% endif %}
+                    </span>
+                    <span class="today-date">{{ today_date_label }}</span>
+                  </div>
+
+                  {% if today_rows %}
+                    <div class="today-body">
+                      {% for group, items in today_rows|groupby("muscle_group") %}
+                        <div class="today-group">
+                          <h4 class="today-group-title">{{ group }}</h4>
+                          <ul class="today-list">
+                            {% for r in items %}
+                              <li class="today-line">
+                                <span class="today-exercise">{{ r.exercise }}</span>
+                                <span class="today-meta">
+                                  {% if r.weight is not none %}{{ r.weight|round(0) }}{% else %}-{% endif %} lb
+                                  ×
+                                  {% if r.reps is not none %}{{ r.reps|round(0) }}{% else %}-{% endif %}
+                                  {% if r.total is not none %}
+                                    <span class="today-total">Total: {{ r.total|round(0) }}</span>
+                                  {% endif %}
+                                </span>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <p class="today-rest-text">
+                      No training logged yet — could be a rest day, could be a chance to move later.
+                    </p>
+                  {% endif %}
+                </div>
+              </div>
+
+                    <div class="today-reactions">
+                      <p class="reactions-title">
+                        How does my workout feel to you?
+                      </p>
+
+                      <div class="reactions-buttons">
+                        {% if today_rows %}
+                          <!-- Great job -->
+                          <form method="post" action="{{ url_for('workout_react') }}" class="reaction-form">
+                            <input type="hidden" name="reaction_type" value="great">
+                            <button type="submit"
+                                    class="react-btn react-btn-positive"
+                                    style="--fill: {{ reaction_fill['great'] }}">
+                              <span class="react-fill"></span>
+                              <span class="react-label">You did a great job today ✨</span>
+                            </button>
+                          </form>
+
+                          <!-- Push more -->
+                          <form method="post" action="{{ url_for('workout_react') }}" class="reaction-form">
+                            <input type="hidden" name="reaction_type" value="push">
+                            <button type="submit"
+                                    class="react-btn react-btn-push"
+                                    style="--fill: {{ reaction_fill['push'] }}">
+                              <span class="react-fill"></span>
+                              <span class="react-label">Not enough… push your limits further 💪</span>
+                            </button>
+                          </form>
+                        {% else %}
+                          <!-- No workout today -->
+                          <form method="post" action="{{ url_for('workout_react') }}" class="reaction-form">
+                            <input type="hidden" name="reaction_type" value="rest">
+                            <button type="submit"
+                                    class="react-btn react-btn-positive"
+                                    style="--fill: {{ reaction_fill['rest'] }}">
+                              <span class="react-fill"></span>
+                              <span class="react-label">Take a well-earned rest day 😌</span>
+                            </button>
+                          </form>
+
+                          <form method="post" action="{{ url_for('workout_react') }}" class="reaction-form">
+                            <input type="hidden" name="reaction_type" value="lazy">
+                            <button type="submit"
+                                    class="react-btn react-btn-tease"
+                                    style="--fill: {{ reaction_fill['lazy'] }}">
+                              <span class="react-fill"></span>
+                              <span class="react-label">Lazy? or just pretending it’s recovery? 😏</span>
+                            </button>
+                          </form>
+                        {% endif %}
+                      </div>
+
+                      <!-- Thank you message for votes -->
+                      <p id="vote-thanks" class="reaction-thanks">
+                        Thanks for your reaction!
+                      </p>
+
+                      <form method="post" action="{{ url_for('workout_feedback') }}" class="reaction-form reaction-form-text">
+                        <textarea
+                          class="reaction-textarea"
+                          name="message"
+                          rows="3"
+                          placeholder="Share your thoughts about my workout…"
+                        ></textarea>
+                        <button type="submit" class="reaction-submit-btn">
+                          Submit
+                        </button>
+                      </form>
+
+                        <div class="feedback-message">
+                          <p id="feedback-thanks" class="reaction-thanks">
+                            Thanks for sharing your thoughts 🙌
+                          </p>
+                          <p id="feedback-empty" class="reaction-thanks" style="color:#dc2626;">
+                            Please write something before submitting 📝
+                          </p>
+                        </div>
+
+                    </div>
+
+            </div>
+
+          <h3>Training Progress by Target</h3>
+          <div class="pr-grid">
+            {% set main_groups = groups[:4] %}
+            {% for g in main_groups %}
+              <div class="pr-card" data-group="{{ g }}" data-index="{{ loop.index0 }}">
+                <div class="pr-card-header">
+                  <h4 class="pr-title">{{ g }}</h4>
+                  <select class="pr-exercise-select filter-select">
+                    <option value="All">All exercises</option>
+                    <!-- options for this target will be filled by JS -->
+                  </select>
+                </div>
+                <canvas id="chart-pr-{{ loop.index0 }}" height="120"></canvas>
+              </div>
+            {% endfor %}
+          </div>
+          <p id="pr-status" class="muted"></p>
+
+          <h3 style="margin-top:40px;">Training Volume</h3>
+          <div class="freq-filter-row">
+            <label for="vol-period" class="filter-label">View by</label>
+            <select id="vol-period" class="filter-select">
+              <option value="W">Per Week</option>
+              <option value="M">Per Month</option>
+            </select>
+          </div>
+          <canvas id="chart-vol" height="120"></canvas>
+
+          <h3 style="margin-top:40px;">Workout Frequency</h3>
+          <div class="freq-filter-row">
+            <label for="freq-period" class="filter-label">View by</label>
+            <select id="freq-period" class="filter-select">
+              <option value="W">Per Week</option>
+              <option value="M">Per Month</option>
+            </select>
+          </div>
+          <p id="heat-status" class="muted"></p>
+          <canvas id="chart-heat" height="120"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container"><p>&copy; 2025 Nagaru Okawa. All rights reserved.</p></div>
+  </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const voteThanks = document.getElementById('vote-thanks');
+        const feedbackThanks = document.getElementById('feedback-thanks');
+        const feedbackEmpty = document.getElementById('feedback-empty');
+
+        document.querySelectorAll('.reaction-form').forEach(function (form) {
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();  // don't reload / scroll or navigate away
+
+            const isTextForm = form.classList.contains('reaction-form-text');
+            const formData = new FormData(form);
+
+            if (isTextForm) {
+              // ----- TEXT FEEDBACK -----
+              const ta = form.querySelector('textarea');
+              const text = ta ? ta.value.trim() : '';
+
+              // hide both messages before validation
+              if (feedbackThanks) feedbackThanks.classList.remove('visible');
+              if (feedbackEmpty) feedbackEmpty.classList.remove('visible');
+
+              if (!text) {
+                // show "please fill" message instead of submitting
+                if (feedbackEmpty) feedbackEmpty.classList.add('visible');
+                return;
+              }
+
+              // send feedback, then clear box and show thank-you
+              fetch(form.action, {
+                method: 'POST',
+                body: formData
+              })
+                .then(function () {
+                  if (ta) ta.value = '';
+                  if (feedbackThanks) feedbackThanks.classList.add('visible');
+                })
+                .catch(function (err) {
+                  console.error('Feedback submit failed', err);
+                });
+
+              return;  // done for text form
+            }
+
+            // ----- VOTE BUTTONS -----
+            if (voteThanks) voteThanks.classList.remove('visible');
+
+            fetch(form.action, {
+              method: 'POST',
+              body: formData
+            })
+              .then(function (resp) {
+                return resp.json();
+              })
+              .then(function (data) {
+                if (!data || !data.ok) return;
+
+                const fills = data.reaction_fill || {};
+
+                // Update fill bar for every reaction button present
+                document.querySelectorAll('.reactions-buttons form').forEach(function (f) {
+                  const typeInput = f.querySelector('input[name="reaction_type"]');
+                  const btn = f.querySelector('.react-btn');
+                  if (!typeInput || !btn) return;
+
+                  const t = typeInput.value;
+                  const val = (typeof fills[t] === 'number') ? fills[t] : 0;
+                  btn.style.setProperty('--fill', val);
+                });
+
+                // Visually mark the one the user clicked
+                const clickedBtn = form.querySelector('.react-btn');
+                if (clickedBtn) {
+                  document
+                    .querySelectorAll('.reactions-buttons .react-btn')
+                    .forEach(function (b) { b.classList.remove('react-btn-selected'); });
+                  clickedBtn.classList.add('react-btn-selected');
+                }
+
+                if (voteThanks) {
+                  voteThanks.classList.add('visible');
+                }
+              })
+              .catch(function (err) {
+                console.error('Reaction submit failed', err);
+              });
+          });
+        });
+      });
+    </script>
+  <script src="/static/js/script.js"></script>
+  <script src="/static/js/workout.ts"></script>
+</body>
+</html>

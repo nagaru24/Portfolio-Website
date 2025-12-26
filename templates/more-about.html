@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>More About Me - Nagaru Okawa</title>
+
+  <!-- Link the existing CSS -->
+  <link rel="stylesheet" href="static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* Page-specific tweaks */
+    .more-about-container {
+      max-width: 900px;
+      margin: 100px auto 50px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .more-about-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .bio-text {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .photo-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 2rem;
+    }
+
+    .photo-gallery img {
+      width: 250px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .photo-gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-back {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #6a5acd, #7b68ee);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(90deg, #7b68ee, #6a5acd);
+    }
+
+    /* Container for all sections */
+    .about-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+      margin-top: 3rem;
+    }
+
+    /* Each block: photo and text side by side */
+    .about-block {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Reverse order for alternating layout */
+    .about-block.reverse {
+      flex-direction: row-reverse;
+    }
+
+    /* Photo styles */
+    .about-photo img {
+      width: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .about-photo img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Text styling */
+    .about-text {
+      flex: 1;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      text-align: left;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 768px) {
+      .about-block,
+      .about-block.reverse {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .about-photo img {
+        width: 80%;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar (copy from index.html) -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="https://nagaru24k.pythonanywhere.com/" class="nav-logo">
+            <img src="static/images/logo.png" alt="Nagaru.O Logo" class="logo-img">
+        </a>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#home" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#about" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#projects" class="nav-link">Projects</a></li>
+          <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+    </div>
+</nav>
+
+  <!-- Main Content -->
+  <section class="about">
+    <div class="container">
+      <h2 class="section-title">More About Me</h2>
+
+        <div class="about-sections">
+
+          <!-- 1st Block: Photo Left / Text Right -->
+          <div class="about-block">
+            <div class="about-photo">
+              <img src="static/images/Welcome to the world.png" alt="Welcome to the world">
+            </div>
+            <div class="about-text">
+              <p>My name, Nagaru Okawa (大川悠流), has a unique meaning.</p>
+              <p>In Japanese, “Okawa” (大川) means “big river”, and “Nagaru” (悠流) means
+                <b>“flowing eternally”</b>. My father, a Japanese teacher, gave me this
+                name to inspire me to keep <b>moving forward and stay pure</b> like flowing water.
+              </p>
+            </div>
+          </div>
+
+          <!-- 2nd Block: Photo Right / Text Left -->
+          <div class="about-block reverse">
+            <div class="about-photo">
+              <img src="static/images/Playing Baseball.png" alt="Playing Baseball">
+            </div>
+            <div class="about-text">
+              <p>I was born and raised in Hokkaido, Japan, the northernmost prefecture.
+                 I played <b>baseball</b> for 16 years, which led me to study at
+                 <b>Juntendo University</b> in the <b>biomechanics</b> program.
+              </p>
+              <p>In a biomechanics lab, I focused on analyzing baseball performance and
+                 became fascinated by data analysis, motion tracking, and coding that
+                 help athletes improve and prevent injury.
+              </p>
+            </div>
+          </div>
+
+          <!-- 3rd Block: Photo Left / Text Right -->
+          <div class="about-block">
+            <div class="about-photo">
+              <img src="static/images/Me in US.png" alt="Me in US">
+            </div>
+            <div class="about-text">
+              <p>To connect technology, data, and business, I am pursuing a degree in
+                <b>Management Information Systems (MIS)</b> at the
+                <b>University of Nebraska at Omaha</b>.
+              </p>
+              <p>Moving to the U.S. has expanded my knowledge and prepared me for a future
+                career in IT. The journey from <b>athlete to technology enthusiast</b>
+                has shaped my passion for continuous learning and using technology to
+                solve real-world problems.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="text-align:center; margin-top:2rem;">
+          <a href="/#about" class="btn btn-primary">← Back to About Section</a>
+          <a href="https://nagaru24k.pythonanywhere.com/resume" class="btn btn-primary" style="margin-top: 1rem;">Check My Full Resume →</a>
+        </div>
+    </div>
+  </section>
+
+  <!-- Footer (copy from index.html) -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Nagaru Okawa. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="static/js/script.js"></script>
+</body>
+</html>
