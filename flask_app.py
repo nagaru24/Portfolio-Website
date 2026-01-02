@@ -1,8 +1,19 @@
 # flask_app.py  — clean, single-source version
+
+import os
+
+# Load .env locally (safe in prod too; it will just do nothing if .env doesn't exist)
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # reads .env in the current working directory
+except Exception:
+    pass
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-import csv, os
+import csv
 from datetime import timedelta, datetime as _dt, date as _date
 import pytz
+
 
 OMAHA_TZ = pytz.timezone("America/Chicago")
 

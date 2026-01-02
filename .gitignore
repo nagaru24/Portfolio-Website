@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+.venv/
+
+# Environment variables & secrets
+.env
+secrets/
+*.json
+
+# OS
+.DS_Store
