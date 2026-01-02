@@ -4,7 +4,6 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "workout-dashboard-476518-f4b943386f4f.json")
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 SHEET_ID = "1hwTeWjYiuWh6yjjpomGZ5WaxOaAngfuQn8uMdZPyjOk"
@@ -24,6 +23,18 @@ _HEADER_MAP = {
     "Total": "total",
 }
 
+def _get_service_account_file() -> str:
+
+    path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "").strip()
+
+    if path and os.path.isfile(path):
+        return path
+
+    raise RuntimeError(
+        "Google Sheets credentials not found. "
+        "Set environment variable GOOGLE_APPLICATION_CREDENTIALS to your service account JSON path."
+    )
+
 def _parse_mmdd(mmdd: str):
     """
     Take strings like '1/2' or '01/02' and return:
@@ -41,8 +52,11 @@ def _parse_mmdd(mmdd: str):
         return "", None
 
 def _fetch_rows():
+    service_account_file = _get_service_account_file()
+
     creds = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES
+        service_account_file,
+        scopes=SCOPES
     )
     svc = build("sheets", "v4", credentials=creds)
     resp = svc.spreadsheets().values().get(spreadsheetId=SHEET_ID, range=RANGE).execute()
