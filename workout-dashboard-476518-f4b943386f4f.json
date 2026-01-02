@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "workout-dashboard-476518",
+  "private_key_id": "f4b943386f4f0ba95aeef91742db32ec2e29742c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDL1cwvo0XHqNOJ\nAk1hDHJi8FNxo0HPo92zK4ale2gvsv8oWww8CpXICGQLwAPgF2FZ1QiVHPFwFqb+\n62WPkb+sT9w/+Mg3lDmCs5Su4Yv7gXRUE/s3bKco3ltiw8BOl6FKWd2csZ9agF01\nOCBqEsItinUP5jTKliLW7rk7H3a8IpxKD6Ema24hFKQn4W0M+FJ+/KA3x/wqwcda\nh7HCLyw+5PKuL35N+IizFBMQ5cOw/5a00Sj2vJarUXeNfC3QTHN1C1xMedX0hGGz\ntc8wbw/D2gOcw/nbSXqNzK+4z5OHWhmOQ/Pp+uOyr4MKgEp8HGpPXosttZQvDZ3q\n60bY34bHAgMBAAECggEALtcOeNP4MQ1mrtFMnsSRdJLtWeu+L8zkIUwbQOO+6Vck\ns01Y3mNAUBs9gkW5nkFBKbd+pWVlRfCup13IlNlVRm+DmV++AqeZH6PMwvMpi74P\n0VJWJEJfl1Chh2ycQHMvqTpFZsCacd2Vjak8KaPt4zEx/VlVQEiH8QQipKdyTYDt\nDX0g7V8LLw3Glq0sVqqRB3yMWbv4uHU7OeBul42PAxKd+ees1YvVX+Tv31OEpQpB\nwLa0HqVWxZTIW30B5Jeor3sZC+I6hH2eHNUlj+vrzeeOXmYiZqAVTYg6QlMwlYhm\nCX8SHa4aHDqiEc1z4Kb9zqfiLrVX5GUJ+Yihi6LFwQKBgQD8haSRG3fRfZLCvY35\nko13xFBzrN09whyUlsHN8d+njR6Ck+4RNrGyC/2F+IX+yaZ7wE0Nbbe2sH0MxHeb\nu9mMlVcgL41jGJI//gN69zzGYNwFyKPzV2aZD4IBI+xEpx+VMgP9tOasGmG3MFAf\npMGD1gKBW2QMCjkn91S/fsVALwKBgQDOpH3bKx0URhD7PuGlDI59IjOfR2SMbOVS\nmfZLTUhEbcC1YVmV71o8PcsDVWAteFTXlwP9zHHqD7YxzRMHrvlxDb15Hxydt7PN\n5g2sU42bsn0jDnS7tUaywOaHgl5lpE79oXMZsBPheVqKTEqWtohqOEKGrwmMmhrc\n63PMkOak6QKBgDpysGmJwwzxFMQQXckzW50qCjkL/NVrlXPrBQanAk5kwngUx1ii\noTSFw/N7V4BmqisgknUWPRyC8x6+ZrTcIPmCI31mpEIYkNlQ8PtIOH/uMV8BVrlf\nNHce+MdMykYFrLC6t+PEOFQDczSUcScx2jyqjz/jqF+FCj+u5qXAMOWvAoGAbaxR\n++OrAFqboq1iFzZN3c4sNcovbHRTVf7PAHJY+7CAigPMB07MxpJJUFCcxiVKak4F\nWUuL3h1OpqngAsD0NPOE72b6yh54uLvz39VMoCkgT13ZyNJSXocREzS3Ix0Mq4Jn\n02dnddDxo9sP72ObjTyk2lTGLbCQt1Xj1NvG/hkCgYEA0Tm66VSZI3ax8SKEJNQn\nm1q5GuWUU7bxPNz2axNSoElSU1ejAc3YmW5ki2nuhIuQEI1prZUd1vLw/MPlLbMx\n3XJ8a+CyCBnAbhgh9J7ylWkmbu6mz1uCYXLDdCR/t/FM48MEL+ZJiPTWV+6va+m7\nVTSLmhrZwAX6nZkTdEBPbGk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "workout-dashboard@workout-dashboard-476518.iam.gserviceaccount.com",
+  "client_id": "101841179793572411427",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/workout-dashboard%40workout-dashboard-476518.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
