@@ -1,11 +1,19 @@
 # Python
 __pycache__/
+*.pyc
 .venv/
+venv/
 
 # Environment variables & secrets
 .env
+.env.*
 secrets/
 *.json
 
 # OS
 .DS_Store
+Thumbs.db
+Desktop.ini
+*.tmp
+*.bak
+*.swp
