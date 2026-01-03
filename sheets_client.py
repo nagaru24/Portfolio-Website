@@ -3,6 +3,14 @@ from datetime import date as _date, datetime as _dt, timedelta
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
+# Load .env automatically for local dev
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # looks for .env in current working directory
+except Exception:
+    pass
+
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -52,17 +60,21 @@ def _parse_mmdd(mmdd: str):
         return "", None
 
 def _fetch_rows():
-    service_account_file = _get_service_account_file()
+    try:
+        service_account_file = _get_service_account_file()
 
-    creds = service_account.Credentials.from_service_account_file(
-        service_account_file,
-        scopes=SCOPES
-    )
-    svc = build("sheets", "v4", credentials=creds)
-    resp = svc.spreadsheets().values().get(spreadsheetId=SHEET_ID, range=RANGE).execute()
-    vals = resp.get("values", [])
-    if not vals:
-        return []
+        creds = service_account.Credentials.from_service_account_file(
+            service_account_file,
+            scopes=SCOPES
+        )
+        svc = build("sheets", "v4", credentials=creds)
+        resp = svc.spreadsheets().values().get(spreadsheetId=SHEET_ID, range=RANGE).execute()
+        vals = resp.get("values", [])
+        if not vals:
+            return []
+    except Exception as e:
+        print("SHEETS ERROR:", repr(e))
+        raise
 
     raw_headers = vals[0]
     data = vals[1:]
