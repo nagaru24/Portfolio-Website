@@ -15,10 +15,12 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 SHEET_ID = "1hwTeWjYiuWh6yjjpomGZ5WaxOaAngfuQn8uMdZPyjOk"
-RANGE = "'2025'!A:F"   # Date, Target, Exercise, Weight, Reps, Total
+def _range_for_year(year: int) -> str:
+    # Tabs are named "2025", "2026", etc.
+    return f"'{int(year)}'!A:F"  # Date, Target, Exercise, Weight, Reps, Total
 
 # cache to reduce API calls
-_CACHE = {"rows": None, "expires": 0}
+_CACHE = {}
 TTL_SECONDS = 600  # 10 min
 
 # Map the headers -> normalized keys the app uses
@@ -59,7 +61,8 @@ def _parse_mmdd(mmdd: str):
     except Exception:
         return "", None
 
-def _fetch_rows():
+def _fetch_rows(year: int):
+    rng = _range_for_year(year)
     try:
         service_account_file = _get_service_account_file()
 
@@ -68,7 +71,7 @@ def _fetch_rows():
             scopes=SCOPES
         )
         svc = build("sheets", "v4", credentials=creds)
-        resp = svc.spreadsheets().values().get(spreadsheetId=SHEET_ID, range=RANGE).execute()
+        resp = svc.spreadsheets().values().get(spreadsheetId=SHEET_ID, range=rng).execute()
         vals = resp.get("values", [])
         if not vals:
             return []
@@ -111,24 +114,28 @@ def _fetch_rows():
         rows.append(rec)
     return rows
 
-def get_rows():
+def get_rows(year: int = 2025):
+    year = int(year)
     now = time.time()
-    if _CACHE["rows"] is None or now >= _CACHE["expires"]:
-        _CACHE["rows"] = _fetch_rows()
-        _CACHE["expires"] = now + TTL_SECONDS
-    return _CACHE["rows"]
+    entry = _CACHE.get(year)
 
-def unique_exercises():
+    if (entry is None) or (now >= entry["expires"]):
+        rows = _fetch_rows(year)
+        _CACHE[year] = {"rows": rows, "expires": now + TTL_SECONDS}
+
+    return _CACHE[year]["rows"]
+
+def unique_exercises(year: int = 2025):
     seen = set()
-    for r in get_rows():
+    for r in get_rows(year):
         ex = (r.get("exercise") or "").strip()
         if ex:
             seen.add(ex)
     return sorted(seen)
 
-def unique_muscle_groups():
+def unique_muscle_groups(year: int = 2025):
     seen = set()
-    for r in get_rows():
+    for r in get_rows(year):
         mg = (r.get("muscle_group") or "").strip()
         if mg:
             seen.add(mg)

@@ -1,5 +1,3 @@
-# flask_app.py  — clean, single-source version
-
 import os
 
 # Load .env locally (safe in prod too; it will just do nothing if .env doesn't exist)
@@ -22,6 +20,16 @@ OMAHA_TZ = pytz.timezone("America/Chicago")
 def _today_omaha():
     """Return today's date in Omaha (America/Chicago) time."""
     return _dt.now(OMAHA_TZ).date()
+
+def _get_year_arg(default=2025) -> int:
+    y = (request.args.get("year") or str(default)).strip()
+    try:
+        y = int(y)
+    except Exception:
+        y = default
+    if y not in (2025, 2026):
+        y = default
+    return y
 
 # Sheets helpers (expect: Date/Target/Exercise/Weight/Reps/Total -> mapped in sheets_client.py)
 from sheets_client import get_rows, unique_exercises, unique_muscle_groups
@@ -74,21 +82,21 @@ def contact():
 # -----------------------------
 @app.route("/workout")
 def workout():
-    # existing filters for dropdowns
+    year = _get_year_arg(2025)
+
     try:
-        exs = unique_exercises()
-        groups = unique_muscle_groups()
+        exs = unique_exercises(year)
+        groups = unique_muscle_groups(year)
     except Exception:
         exs, groups = [], []
 
     # ----- today's workout rows -----
     today_rows = []
     today = _today_omaha()
-    today_date_label = today.strftime("%b %d, %Y")  # always visible
+    today_date_label = today.strftime("%b %d, %Y")
 
     try:
-        rows = [_ensure_row_normalized(dict(r)) for r in get_rows()]
-        # fake-year key like elsewhere: 2000-MM-DD
+        rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
         target_key = _date(2000, today.month, today.day)
         for r in rows:
             if r.get("_date_key") == target_key:
@@ -120,6 +128,8 @@ def workout():
 
     return render_template(
         "workout.html",
+        year=year,
+        year_options=[2025, 2026],
         exercises=exs,
         groups=groups,
         today_rows=today_rows,
@@ -258,7 +268,7 @@ def _ensure_row_normalized(r):
 
     return r
 
-def _filter_rows(muscle=None, exercise=None):
+def _filter_rows(muscle=None, exercise=None, year: int = 2025):
     # Normalize incoming filters: treat "", "All" as no filter
     m = _norm(muscle)
     e = _norm(exercise)
@@ -266,7 +276,7 @@ def _filter_rows(muscle=None, exercise=None):
     if e.lower() == "all": e = ""
 
     try:
-        rows = [ _ensure_row_normalized(dict(r)) for r in get_rows() ]  # copy+normalize
+        rows = [ _ensure_row_normalized(dict(r)) for r in get_rows(year) ]  # copy+normalize
     except Exception:
         rows = []
 
@@ -343,7 +353,8 @@ def api_workout_options():
     Used to populate per-chart exercise dropdowns.
     """
     try:
-        rows = [dict(r) for r in get_rows()]
+        year = _get_year_arg(2025)
+        rows = [dict(r) for r in get_rows(year)]
     except Exception:
         rows = []
 
@@ -382,7 +393,8 @@ def api_workout_group_series():
         return abort(400, "muscle is required")
 
     try:
-        rows = [_ensure_row_normalized(dict(r)) for r in get_rows()]
+        year = _get_year_arg(2025)
+        rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
     except Exception:
         rows = []
 
@@ -482,7 +494,8 @@ def api_workout_progress_by_group():
 
     exercise = request.args.get("exercise")  # may be None / "All"
     try:
-        rows = [_ensure_row_normalized(dict(r)) for r in get_rows()]
+        year = _get_year_arg(2025)
+        rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
     except Exception:
         rows = []
 
@@ -517,8 +530,8 @@ def api_workout_volume():
     # We keep 'period' param for flexibility, but front-end will always send 'W' (weekly)
     period = (request.args.get("period") or "W").upper()  # 'W' or 'M'
     muscle = request.args.get("muscle")
-    # NEW: ignore exercise filter here
-    rows = _filter_rows(muscle=muscle, exercise=None)
+    year = _get_year_arg(2025)
+    rows = _filter_rows(muscle=muscle, exercise=None, year=year)
 
     if period == "M":
         return jsonify(_sum_total_by_month(rows))
@@ -534,7 +547,8 @@ def api_workout_frequency():
     period = (request.args.get("period") or "W").upper()
 
     try:
-        rows = [_ensure_row_normalized(dict(r)) for r in get_rows()]
+        year = _get_year_arg(2025)
+        rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
     except Exception:
         rows = []
 

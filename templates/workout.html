@@ -536,7 +536,7 @@
 </style>
 
 </head>
-<body>
+<body data-year="{{ year }}">
 <nav class="navbar">
     <div class="nav-container">
         <a href="https://nagaru24k.pythonanywhere.com/" class="nav-logo">
@@ -686,6 +686,19 @@
 
             </div>
 
+          <!-- Year selector -->
+          <div class="filters" style="display:flex; gap:12px; align-items:center; margin: 10px 0 18px;">
+            <label for="yearSelect" style="font-weight:600;">Year</label>
+
+            <div class="select-wrap">
+              <select id="yearSelect" class="filter-select">
+                {% for y in year_options %}
+                  <option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
           <h3>Training Progress by Target</h3>
           <div class="pr-grid">
             {% set main_groups = groups[:4] %}
@@ -722,6 +735,7 @@
               <option value="M">Per Month</option>
             </select>
           </div>
+
           <p id="heat-status" class="muted"></p>
           <canvas id="chart-heat" height="120"></canvas>
         </div>

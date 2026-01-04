@@ -1,7 +1,7 @@
-// static/js/workout.ts (plain JS, works as JS)
+// static/js/workout.js
 (function () {
   const $muscle   = document.getElementById('muscle-select');
-  const $exercise = document.getElementById('exercise-select'); // global, now mostly for volume only
+  const $exercise = document.getElementById('exercise-select'); // (kept if you still use it somewhere)
   const $freqSel  = document.getElementById('freq-period');
   const $volSel   = document.getElementById('vol-period');
 
@@ -13,20 +13,47 @@
   let   volChart  = null;
   let   freqChart = null;
 
-  let optionsData = null; // will hold {groups, group_to_ex, ex_to_group}
+  let optionsData = null; // {groups, group_to_ex, ex_to_group}
 
   function norm(v) {
     return (v || '').trim();
   }
 
-  async function j(url) {
+  function setText(el, txt) {
+    if (el) el.textContent = txt;
+  }
+
+  function getSelectedYear() {
+    const el = document.getElementById("yearSelect");
+    if (el && el.value) return el.value;
+
+    const bodyYear = document.body.dataset.year;
+    return bodyYear ? bodyYear.toString() : "2025";
+  }
+
+  // Build API URL safely (never string-concat query params)
+  function buildApiUrl(path, paramsObj = {}) {
+    const u = new URL(path, window.location.origin);
+
+    // Always include year
+    u.searchParams.set("year", getSelectedYear());
+
+    // Add additional params
+    Object.entries(paramsObj).forEach(([k, v]) => {
+      if (v === undefined || v === null) return;
+      const s = ("" + v).trim();
+      if (!s) return;
+      u.searchParams.set(k, s);
+    });
+
+    return u.toString();
+  }
+
+  async function j(path, paramsObj = {}) {
+    const url = buildApiUrl(path, paramsObj);
     const r = await fetch(url, { cache: 'no-store' });
     if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
     return r.json();
-  }
-
-  function setText(el, txt) {
-    if (el) el.textContent = txt;
   }
 
   // -----------------------
@@ -42,14 +69,17 @@
     if (!group || !canvasEl) return;
 
     const selectedExercise = norm(selectEl && selectEl.value);
-    const params = new URLSearchParams();
-    params.set('muscle', group);
-    if (selectedExercise && selectedExercise.toLowerCase() !== 'all') {
-      params.set('exercise', selectedExercise);
-    }
 
     try {
-      const series = await j('/api/workout/group_series?' + params.toString());
+      const series = await j("/api/workout/group_series", {
+        period: "W",
+        muscle: group,
+        exercise:
+          (selectedExercise && selectedExercise.toLowerCase() !== 'all')
+            ? selectedExercise
+            : ""
+      });
+
       const mode   = series.mode || 'volume';
       const points = series.points || [];
 
@@ -111,39 +141,45 @@
   }
 
   // -----------------------
-  // Weekly volume (target only)
+  // Volume (week/month)
   // -----------------------
   async function refreshVolume() {
     const muscle = norm($muscle && $muscle.value);
     const period = ($volSel && $volSel.value) || 'W';   // 'W' or 'M'
-    const params = new URLSearchParams();
-    params.set('period', period);
-    if (muscle && muscle.toLowerCase() !== 'all') {
-      params.set('muscle', muscle);
-    }
 
     try {
-      const data = await j('/api/workout/volume?' + params.toString());
+      const data = await j("/api/workout/volume", {
+        period: period,
+        muscle: (muscle && muscle.toLowerCase() !== 'all') ? muscle : ""
+      });
+
       if (volChart) {
         volChart.destroy();
         volChart = null;
       }
+
       const labels = (data || []).map(d => d.period);
       const vols   = (data || []).map(d => d.volume);
 
       const labelText = (period === 'M') ? 'Monthly Volume' : 'Weekly Volume';
 
-      volChart = new Chart(document.getElementById('chart-vol'), {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{ label: labelText, data: vols }]
-        },
-        options: {
-          responsive: true,
-          animation: { duration: 250 }
+    volChart = new Chart(document.getElementById('chart-vol'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{ label: labelText, data: vols }]
+      },
+      options: {
+        responsive: true,
+        animation: { duration: 250 },
+        plugins: {
+          legend: {
+            display: false
+          }
         }
-      });
+      }
+    });
+
     } catch (e) {
       // console.error(e);
     }
@@ -154,16 +190,17 @@
   // -----------------------
   async function refreshFrequency() {
     const period = ($freqSel && $freqSel.value) || 'W';
-    const params = new URLSearchParams();
-    params.set('period', period);
 
     try {
       setText($heatStatus, 'Loading…');
-      const data = await j('/api/workout/frequency?' + params.toString());
+
+      const data = await j("/api/workout/frequency", { period });
+
       if (freqChart) {
         freqChart.destroy();
         freqChart = null;
       }
+
       const labels = (data || []).map(d => d.period);
       const counts = (data || []).map(d => d.count);
 
@@ -173,17 +210,23 @@
         setText($heatStatus, '');
       }
 
-      freqChart = new Chart(document.getElementById('chart-heat'), {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{ label: 'Workout days', data: counts }]
-        },
-        options: {
-          responsive: true,
-          animation: { duration: 250 }
+    freqChart = new Chart(document.getElementById('chart-heat'), {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{ label: 'Workout days', data: counts }]
+      },
+      options: {
+        responsive: true,
+        animation: { duration: 250 },
+        plugins: {
+          legend: {
+            display: false   // ✅ hide "Workout days"
+          }
         }
-      });
+      }
+    });
+
     } catch (e) {
       setText($heatStatus, 'Failed to load.');
       // console.error(e);
@@ -194,19 +237,17 @@
   // Initial setup
   // -----------------------
   async function initPerCardFilters() {
-    // load group->exercise mapping once
     try {
-      optionsData = await j('/api/workout/options');
+      // no need to pass "period" to options endpoint
+      optionsData = await j("/api/workout/options");
     } catch (e) {
       // console.error(e);
       optionsData = { group_to_ex: {} };
     }
 
     const group_to_ex = (optionsData && optionsData.group_to_ex) || {};
-
     prCharts = new Array(prCards.length).fill(null);
 
-    // populate each card's exercise select and bind change handler
     prCards.forEach(function (card, idx) {
       const group = card.dataset.group;
       const selectEl = card.querySelector('.pr-exercise-select');
@@ -231,15 +272,12 @@
         refreshCard(card);
       });
 
-      // initial load for this card
       refreshCard(card);
     });
   }
 
   async function refreshAll() {
-    // training charts: handled per-card
     await initPerCardFilters();
-    // weekly volume & frequency
     await refreshVolume();
     await refreshFrequency();
   }
@@ -249,18 +287,31 @@
   // -----------------------
   if ($muscle) {
     $muscle.addEventListener('change', function () {
-      refreshVolume(); // only volume cares about target now
+      refreshVolume();
     });
   }
+
   if ($freqSel) {
     $freqSel.addEventListener('change', function () {
       refreshFrequency();
     });
   }
+
   if ($volSel) {
-      $volSel.addEventListener('change', function () {
-        refreshVolume(); // re-load as week/month changes
-      });
+    $volSel.addEventListener('change', function () {
+      refreshVolume();
+    });
+  }
+
+  // Year change -> reload page with ?year=
+  const yearSelect = document.getElementById("yearSelect");
+  if (yearSelect) {
+    yearSelect.addEventListener("change", () => {
+      const y = getSelectedYear();
+      const u = new URL(window.location.href);
+      u.searchParams.set("year", y);
+      window.location.href = u.toString();
+    });
   }
 
   // Fire initial load
