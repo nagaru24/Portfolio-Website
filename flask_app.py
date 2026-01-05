@@ -95,12 +95,21 @@ def workout():
     today = _today_omaha()
     today_date_label = today.strftime("%b %d, %Y")
 
+    # selected year for charts
+    year = _get_year_arg(2025)
+
+    # year for "Today" panel (always current year if possible)
+    today_year = today.year  # 2026 now, 2027 later
+
     try:
-        rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
+        # Prefer current year tab for today’s workout
+        rows_today_year = [_ensure_row_normalized(dict(r)) for r in get_rows(today_year)]
+
         target_key = _date(2000, today.month, today.day)
-        for r in rows:
+        for r in rows_today_year:
             if r.get("_date_key") == target_key:
                 today_rows.append(r)
+
     except Exception:
         today_rows = []
 
