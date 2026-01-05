@@ -19,7 +19,7 @@ from sheets_client import get_rows
 DEFAULT_CONTAMINATION = 0.15  # expected fraction of "unusual" weeks
 MIN_WEEKS_FOR_MODEL = 6       # need enough history to learn baseline
 
-# Your sheet "Target" values (normalize variations here)
+# The sheet "Target" values (normalize variations here)
 TARGETS_CANONICAL = [
     "Arms Shoulders",
     "Back",
@@ -60,7 +60,7 @@ def _canonical_target(raw: str) -> str:
 
 
 def _week_start(d: date) -> date:
-    # Monday start (matches your Flask aggregation approach)
+    # Monday start (matches the Flask aggregation approach)
     return d - timedelta(days=d.weekday())
 
 def _display_date(year: int, md_date: date) -> date:

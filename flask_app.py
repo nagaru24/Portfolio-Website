@@ -76,7 +76,7 @@ def contact():
             w.writerow(["Name", "Email", "Subject", "Message"])
         w.writerow([name, email, subject, message])
 
-    # Back to contact section; you can add ?sent=1 if you want a banner
+    # Back to contact section
     return redirect(url_for("home") + "#contact")
 
 # -----------------------------
@@ -212,7 +212,7 @@ def workout_feedback():
 # -----------------------------
 # Helpers for workout APIs
 # (Dates in sheet are MM/DD with no year.)
-# We sort/group using an internal fake-year key created in sheets_client.py:
+# I sort/group using an internal fake-year key created in sheets_client.py:
 #   record["_date_key"] is a datetime.date(2000, mm, dd)
 # Public labels remain "MM/DD".
 # -----------------------------
@@ -538,7 +538,7 @@ def api_workout_progress_by_group():
 
 @app.route("/api/workout/volume")
 def api_workout_volume():
-    # We keep 'period' param for flexibility, but front-end will always send 'W' (weekly)
+    # I keep 'period' param for flexibility, but front-end will always send 'W' (weekly)
     period = (request.args.get("period") or "W").upper()  # 'W' or 'M'
     muscle = request.args.get("muscle")
     year = _get_year_arg(2025)

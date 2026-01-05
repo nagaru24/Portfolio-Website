@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Collect form data
         const formData = new FormData(contactForm);
 
-        // Send via fetch to your Flask endpoint
+        // Send via fetch to the Flask endpoint
         fetch('/contact', {
             method: 'POST',
             body: formData
