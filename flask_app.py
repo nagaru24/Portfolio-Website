@@ -12,6 +12,8 @@ import csv
 from datetime import timedelta, datetime as _dt, date as _date
 import pytz
 
+from ai_ml import build_weekly_features, detect_anomalies
+
 print("GOOGLE_APPLICATION_CREDENTIALS =", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
 OMAHA_TZ = pytz.timezone("America/Chicago")
@@ -586,3 +588,46 @@ def api_workout_frequency():
         label = wk_start.strftime("%m/%d")  # label the week by its Monday
         out.append({"period": label, "count": len(dayset)})
     return jsonify(out)
+
+@app.route("/api/workout/anomalies")
+def api_workout_anomalies():
+    year = _get_year_arg(2025)
+
+    # optional knobs (safe defaults)
+    try:
+        contamination = float(request.args.get("contamination", "0.15"))
+        contamination = max(0.05, min(0.30, contamination))  # clamp
+    except Exception:
+        contamination = 0.15
+
+    try:
+        limit = int(request.args.get("limit", "8"))
+        limit = max(1, min(50, limit))
+    except Exception:
+        limit = 8
+
+    try:
+        weeks = build_weekly_features(year)
+        result = detect_anomalies(weeks, year=year, contamination=contamination)
+
+        # Sort anomalies by "most anomalous" first (lowest score)
+        anomalies = result.get("anomalies", [])
+        anomalies.sort(key=lambda x: x.get("score", 0.0))
+
+        # Keep only top N
+        anomalies = anomalies[:limit]
+
+        return jsonify({
+            "year": year,
+            "reason": result.get("reason", "ok"),
+            "count": len(anomalies),
+            "anomalies": anomalies,
+        })
+    except Exception as e:
+        return jsonify({
+            "year": year,
+            "reason": "error",
+            "error": str(e),
+            "count": 0,
+            "anomalies": [],
+        }), 500

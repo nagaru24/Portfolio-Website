@@ -29,7 +29,7 @@
 
     const bodyYear = document.body.dataset.year;
     return bodyYear ? bodyYear.toString() : "2025";
-  }
+ }
 
   // Build API URL safely (never string-concat query params)
   function buildApiUrl(path, paramsObj = {}) {
@@ -47,6 +47,106 @@
     });
 
     return u.toString();
+  }
+
+  function pct(x) {
+  if (x === null || x === undefined) return "";
+  return Math.round(Number(x) * 100) + "%";
+  }
+
+  function escapeHtml(s) {
+    return (s || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function formatLabel(label) {
+    // label comes from ai_ml.py: high_volume, low_frequency, imbalanced_targets, etc.
+    switch (label) {
+      case "high_volume": return "High volume spike";
+      case "low_volume": return "Low volume drop";
+      case "high_frequency": return "High frequency week";
+      case "low_frequency": return "Low frequency week";
+      case "imbalanced_targets": return "Target imbalance";
+      case "mixed": return "Multiple signals";
+      default: return "Unusual pattern";
+    }
+  }
+
+  function emojiFor(label) {
+    if (label === "high_volume" || label === "high_frequency") return "⚠️";
+    if (label === "low_volume" || label === "low_frequency") return "⚠️";
+    if (label === "imbalanced_targets") return "🟠";
+    return "🚨";
+  }
+
+  async function refreshAiAlerts() {
+    const statusEl = document.getElementById("ai-status");
+    const box = document.getElementById("ai-alerts");
+    if (!box) return;
+
+    setText(statusEl, "Loading…");
+    box.innerHTML = "";
+
+    try {
+      const res = await j("/api/workout/anomalies", { limit: 8 });
+
+      const anomalies = (res && res.anomalies) ? res.anomalies : [];
+      if (!anomalies.length) {
+        setText(statusEl, "No unusual weeks detected.");
+        box.innerHTML = `
+          <div style="opacity:.9; padding:10px;">
+            No anomalies for ${escapeHtml(String(getSelectedYear()))} yet.
+          </div>`;
+        return;
+      }
+
+      setText(statusEl, `${anomalies.length} flagged week(s)`);
+
+      // Render cards
+      box.innerHTML = anomalies.map(a => {
+        const week = escapeHtml(a.week_start || "");
+        const label = a.label || "unusual_pattern";
+        const title = `${emojiFor(label)} ${formatLabel(label)}`;
+        const dom = escapeHtml(a.dominant_target || "");
+        const domShare = pct(a.dominant_share);
+
+        const shares = a.shares || {};
+        const legs = pct(shares["Legs"]);
+        const back = pct(shares["Back"]);
+        const chest = pct(shares["Chest"]);
+        const arms = pct(shares["Arms Shoulders"]);
+
+        return `
+          <div class="card" style="padding:12px;">
+            <div style="display:flex; justify-content:space-between; gap:10px;">
+              <div style="font-weight:700;">${escapeHtml(title)}</div>
+              <div style="opacity:.8; font-size:.9rem;">Week of ${week}</div>
+            </div>
+
+            <div style="margin-top:10px; line-height:1.45;">
+              <div><b>Volume:</b> ${Number(a.volume || 0).toLocaleString()}</div>
+              <div><b>Frequency:</b> ${escapeHtml(String(a.frequency || 0))} day(s)</div>
+              <div><b>Dominant target:</b> ${dom} (${domShare})</div>
+            </div>
+
+            <div style="margin-top:10px; opacity:.9; font-size:.92rem;">
+              <b>Shares:</b>
+              Legs ${legs} · Back ${back} · Chest ${chest} · Arms ${arms}
+            </div>
+          </div>
+        `;
+      }).join("");
+    } catch (e) {
+      setText(statusEl, "Failed to load AI alerts.");
+      box.innerHTML = `
+        <div style="opacity:.9; padding:10px;">
+          Could not load AI anomalies. Try Refresh.
+        </div>`;
+    }
   }
 
   async function j(path, paramsObj = {}) {
@@ -280,6 +380,7 @@
     await initPerCardFilters();
     await refreshVolume();
     await refreshFrequency();
+    await refreshAiAlerts();
   }
 
   // -----------------------
@@ -317,3 +418,8 @@
   // Fire initial load
   refreshAll();
 })();
+
+const aiBtn = document.getElementById("ai-refresh");
+if (aiBtn) {
+  aiBtn.addEventListener("click", () => refreshAiAlerts());
+}

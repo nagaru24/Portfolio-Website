@@ -738,7 +738,28 @@
 
           <p id="heat-status" class="muted"></p>
           <canvas id="chart-heat" height="120"></canvas>
-        </div>
+
+          <section class="card ai-card" style="margin-top:24px;">
+            <div class="card-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+              <div>
+                <h2 style="margin:0;">AI Coach Alerts</h2>
+                <p style="margin:6px 0 0; opacity:.85; font-size:0.95rem;">
+                  Unsupervised ML (IsolationForest) flags unusual training weeks for the selected year.
+                </p>
+              </div>
+
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span id="ai-status" style="opacity:.85; font-size:0.95rem;"></span>
+                <button id="ai-refresh" class="btn" type="button">Refresh</button>
+              </div>
+            </div>
+
+            <div id="ai-alerts"
+                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                        gap:12px; margin-top:14px;">
+            </div>
+          </section>
+
       </div>
     </div>
   </section>
