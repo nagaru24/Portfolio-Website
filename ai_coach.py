@@ -111,21 +111,24 @@ class CoachMessage:
 # -----------------------------
 # main API
 # -----------------------------
-def build_coach_message(selected_year: int, today_year: Optional[int] = None) -> Dict[str, Any]:
-    """
-    selected_year: the year currently selected in the dashboard dropdown (page context)
-    today_year:    the real current year (defaults to system date year)
-
-    Returns a dict used by the frontend to render Coach Dwayne.
-    """
+def build_coach_message(
+    selected_year: int,
+    today_year: Optional[int] = None,
+    today_md: Optional[int] = None,
+) -> Dict[str, Any]:
+   
     selected_year = int(selected_year)
     today_year = int(today_year) if today_year is not None else date.today().year
 
     # Main analysis is based on today_year
     weeks = build_weekly_features(today_year)
 
-    # ---- Cross-year “you started earlier” narrative (existence/timing only) ----
-    md_today = _md_index(date.today())
+    # ---- Cross-year (existence/timing only) ----
+    if today_md is None:
+        md_today = _md_index(date.today())
+    else:
+        md_today = int(today_md)
+
     cross_year_line = ""
     if selected_year != today_year:
         if _has_workout_on_md(today_year, md_today) and (not _has_any_workout_upto_md(selected_year, md_today)):

@@ -636,5 +636,6 @@ def api_workout_anomalies():
 
 @app.get("/api/workout/coach")
 def api_workout_coach():
-    selected_year = int(request.args.get("year", 2025))
-    return jsonify(build_coach_message(selected_year))
+    selected_year = _get_year_arg(2025)
+    today = _today_omaha()  # Omaha-local date
+    return jsonify(build_coach_message(selected_year, today_year=today.year, today_md=(today.month * 100 + today.day)))
