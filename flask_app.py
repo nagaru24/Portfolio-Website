@@ -14,6 +14,8 @@ import pytz
 
 from ai_ml import build_weekly_features, detect_anomalies
 
+from ai_coach import build_coach_message
+
 print("GOOGLE_APPLICATION_CREDENTIALS =", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
 OMAHA_TZ = pytz.timezone("America/Chicago")
@@ -631,3 +633,8 @@ def api_workout_anomalies():
             "count": 0,
             "anomalies": [],
         }), 500
+
+@app.get("/api/workout/coach")
+def api_workout_coach():
+    selected_year = int(request.args.get("year", 2025))
+    return jsonify(build_coach_message(selected_year))

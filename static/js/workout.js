@@ -1,7 +1,7 @@
 // static/js/workout.js
 (function () {
   const $muscle   = document.getElementById('muscle-select');
-  const $exercise = document.getElementById('exercise-select'); // (kept if you still use it somewhere)
+  const $exercise = document.getElementById('exercise-select'); 
   const $freqSel  = document.getElementById('freq-period');
   const $volSel   = document.getElementById('vol-period');
 
@@ -381,6 +381,45 @@
     await refreshVolume();
     await refreshFrequency();
     await refreshAiAlerts();
+    await refreshCoachDwayne();
+  }
+
+  async function refreshCoachDwayne() {
+    const card = document.getElementById("coach-card");
+    const avatar = document.getElementById("dwayne-avatar");
+    const titleEl = document.getElementById("dwayne-title");
+    const textEl = document.getElementById("dwayne-text");
+    const tipEl = document.getElementById("dwayne-tip");
+
+    if (!textEl || !avatar || !card) return;
+
+    try {
+      const res = await j("/api/workout/coach", {}); // year auto-added by j()
+
+      titleEl.textContent = res.title || "Coach update";
+      textEl.textContent = res.message || "Let’s train smart today.";
+      tipEl.textContent = res.tip ? ("Tip: " + res.tip) : "";
+
+      // mood styling
+      card.classList.remove("mood-proud","mood-watchful","mood-warning","mood-recovery","mood-motivating");
+      if (res.mood) card.classList.add("mood-" + res.mood);
+
+      // pose mapping
+      const pose = (res.mood === "proud") ? "proud"
+        : (res.mood === "recovery") ? "recovery"
+        : (res.mood === "watchful") ? "neutral"
+        : (res.mood === "motivating") ? "motivating"
+        : (res.mood === "warning") ? "warning"
+        : "neutral";
+
+      avatar.setAttribute("data-pose", pose);
+
+    } catch (e) {
+      titleEl.textContent = "Coach offline";
+      textEl.textContent = "I couldn’t load right now — but I’m still rooting for you. 💪";
+      tipEl.textContent = "";
+      avatar.setAttribute("data-pose", "neutral");
+    }
   }
 
   // -----------------------
@@ -417,9 +456,9 @@
 
   // Fire initial load
   refreshAll();
-})();
+  })();
 
-const aiBtn = document.getElementById("ai-refresh");
-if (aiBtn) {
-  aiBtn.addEventListener("click", () => refreshAiAlerts());
-}
+  const aiBtn = document.getElementById("ai-refresh");
+  if (aiBtn) {
+    aiBtn.addEventListener("click", () => refreshAiAlerts());
+  }

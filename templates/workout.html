@@ -533,6 +533,328 @@
     margin: 0;
     text-align: left;
   }
+
+  /* ---- Coach Dwayne (pixel) ---- */
+  .dwayne-wrap {
+    position: relative;
+    margin-top: 10px;
+    height: 78px;
+  }
+
+  /* Pixel “character” built with CSS blocks (no image needed) */
+  #dwayne {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 22px;
+    height: 28px;
+    image-rendering: pixelated;
+
+    /* body (simple pixel silhouette) */
+    background: #fbbf24; /* shirt */
+    box-shadow:
+      /* head */
+      6px -10px 0 0 #e5e7eb,
+      10px -10px 0 0 #e5e7eb,
+      6px -6px 0 0 #e5e7eb,
+      10px -6px 0 0 #e5e7eb,
+
+      /* arm */
+      -2px 4px 0 0 #e5e7eb,
+      -2px 8px 0 0 #e5e7eb,
+
+      /* legs */
+      4px 28px 0 0 #111827,
+      10px 28px 0 0 #111827;
+
+    border-radius: 2px;
+    animation: dwayne-walk 10s linear infinite;
+  }
+
+  /* Walk across the Today card */
+  @keyframes dwayne-walk {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(420px); }
+  }
+
+  /* Speech bubble */
+  .dwayne-bubble {
+    position: absolute;
+    left: 36px;
+    top: 0;
+    max-width: 520px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: rgba(2, 6, 23, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    box-shadow: 0 10px 25px rgba(2, 6, 23, 0.5);
+  }
+
+  .dwayne-bubble::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 16px;
+    width: 0; height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid rgba(2, 6, 23, 0.92);
+  }
+
+  .dwayne-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #e5e7eb;
+    margin-bottom: 4px;
+  }
+
+  .dwayne-text {
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .dwayne-tip {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #9ca3af;
+  }
+
+  /* Mood accents */
+  .dwayne-bubble.mood-proud    { border-color: rgba(34,197,94,0.7); }
+  .dwayne-bubble.mood-watchful { border-color: rgba(234,179,8,0.7); }
+  .dwayne-bubble.mood-warning  { border-color: rgba(239,68,68,0.7); }
+  .dwayne-bubble.mood-recovery { border-color: rgba(56,189,248,0.7); }
+  .dwayne-bubble.mood-motivating { border-color: rgba(168,85,247,0.7); }
+
+  /* Responsive: don't force a huge bubble on small screens */
+  @media (max-width: 600px) {
+    #dwayne { display: none; }
+    .dwayne-bubble { left: 0; max-width: 100%; }
+  }
+
+  /* --- Coach card layout --- */
+  .coach-card{
+    border-radius: 16px;
+    padding: 14px 14px;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+  }
+
+  .coach-top{
+    display:flex;
+    gap: 18px;
+    align-items: center;
+  }
+
+  /* --- Pixel avatar frame --- */
+  .coach-avatar{
+    width: 92px;
+    height: 92px;
+    flex: 0 0 auto;
+
+    /* remove the dark square */
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+
+    /* align pixel art to bottom-left */
+    display: block;
+    position: relative;
+    image-rendering: pixelated;
+
+    /* give it breathing room */
+    margin-left: 6px;
+    margin-top: 2px;
+  }
+
+  /* speech */
+  .coach-name{ font-weight: 800; color:#e5e7eb; font-size:0.9rem; }
+  .coach-title{ margin-top:3px; font-weight:700; color:#e5e7eb; }
+  .coach-text{ margin-top:6px; color:#e5e7eb; line-height:1.35; }
+  .coach-tip{ margin-top:6px; color:#9ca3af; font-size:0.85rem; }
+
+  /* Mood borders (card) */
+  #coach-card.mood-proud      { border-color: rgba(34,197,94,0.65); }
+  #coach-card.mood-watchful   { border-color: rgba(234,179,8,0.65); }
+  #coach-card.mood-warning    { border-color: rgba(239,68,68,0.65); }
+  #coach-card.mood-recovery   { border-color: rgba(56,189,248,0.65); }
+  #coach-card.mood-motivating { border-color: rgba(168,85,247,0.65); }
+
+  /* --- Pixel art base: a 1 “pixel” div with many shadows --- */
+  .coach-avatar::before{
+    content:"";
+    width: 5px;
+    height: 5px;
+    background: transparent;
+    box-shadow: var(--px);
+
+    /* anchor inside the avatar box */
+    position: absolute;
+    left: 8px;
+    top: 10px;
+  }
+
+  /* Neutral pose (standing) */
+  .coach-avatar[data-pose="neutral"]{
+    --px:
+      /* head (skin) */
+      20px 8px 0 #e5e7eb, 24px 8px 0 #e5e7eb, 28px 8px 0 #e5e7eb,
+      20px 12px 0 #e5e7eb,24px 12px 0 #e5e7eb,28px 12px 0 #e5e7eb,
+      /* hair/outline */
+      16px 8px 0 #111827, 32px 8px 0 #111827,
+      16px 12px 0 #111827,32px 12px 0 #111827,
+      /* body (shirt) */
+      20px 16px 0 #fbbf24, 24px 16px 0 #fbbf24, 28px 16px 0 #fbbf24,
+      20px 20px 0 #fbbf24, 24px 20px 0 #fbbf24, 28px 20px 0 #fbbf24,
+      20px 24px 0 #fbbf24, 24px 24px 0 #fbbf24, 28px 24px 0 #fbbf24,
+      /* arms */
+      16px 20px 0 #e5e7eb, 32px 20px 0 #e5e7eb,
+      12px 24px 0 #e5e7eb, 36px 24px 0 #e5e7eb,
+      /* belt */
+      20px 28px 0 #111827, 24px 28px 0 #111827, 28px 28px 0 #111827,
+      /* legs */
+      20px 32px 0 #111827, 28px 32px 0 #111827,
+      20px 36px 0 #111827, 28px 36px 0 #111827,
+      /* shoes */
+      16px 40px 0 #9ca3af, 20px 40px 0 #9ca3af,
+      28px 40px 0 #9ca3af, 32px 40px 0 #9ca3af;
+  }
+
+  /* Proud pose (arms up) */
+  .coach-avatar[data-pose="proud"]{
+    --px:
+      /* head */
+      20px 8px 0 #e5e7eb, 24px 8px 0 #e5e7eb, 28px 8px 0 #e5e7eb,
+      20px 12px 0 #e5e7eb,24px 12px 0 #e5e7eb,28px 12px 0 #e5e7eb,
+      16px 8px 0 #111827, 32px 8px 0 #111827,
+      /* body */
+      20px 16px 0 #22c55e, 24px 16px 0 #22c55e, 28px 16px 0 #22c55e,
+      20px 20px 0 #22c55e, 24px 20px 0 #22c55e, 28px 20px 0 #22c55e,
+      20px 24px 0 #22c55e, 24px 24px 0 #22c55e, 28px 24px 0 #22c55e,
+      /* arms up */
+      12px 8px 0 #e5e7eb, 36px 8px 0 #e5e7eb,
+      12px 12px 0 #e5e7eb,36px 12px 0 #e5e7eb,
+      16px 16px 0 #e5e7eb,32px 16px 0 #e5e7eb,
+      /* legs/shoes */
+      20px 32px 0 #111827, 28px 32px 0 #111827,
+      20px 36px 0 #111827, 28px 36px 0 #111827,
+      16px 40px 0 #9ca3af, 20px 40px 0 #9ca3af,
+      28px 40px 0 #9ca3af, 32px 40px 0 #9ca3af;
+  }
+
+  /* Warning pose (arms crossed) */
+  .coach-avatar[data-pose="warning"]{
+    --px:
+      /* head */
+      20px 8px 0 #e5e7eb, 24px 8px 0 #e5e7eb, 28px 8px 0 #e5e7eb,
+      20px 12px 0 #e5e7eb,24px 12px 0 #e5e7eb,28px 12px 0 #e5e7eb,
+      16px 8px 0 #111827, 32px 8px 0 #111827,
+      /* body red shirt */
+      20px 16px 0 #ef4444, 24px 16px 0 #ef4444, 28px 16px 0 #ef4444,
+      20px 20px 0 #ef4444, 24px 20px 0 #ef4444, 28px 20px 0 #ef4444,
+      20px 24px 0 #ef4444, 24px 24px 0 #ef4444, 28px 24px 0 #ef4444,
+      /* crossed arms */
+      16px 20px 0 #e5e7eb, 20px 20px 0 #e5e7eb, 24px 20px 0 #e5e7eb,
+      24px 24px 0 #e5e7eb, 28px 24px 0 #e5e7eb, 32px 24px 0 #e5e7eb,
+      /* legs/shoes */
+      20px 32px 0 #111827, 28px 32px 0 #111827,
+      20px 36px 0 #111827, 28px 36px 0 #111827,
+      16px 40px 0 #9ca3af, 20px 40px 0 #9ca3af,
+      28px 40px 0 #9ca3af, 32px 40px 0 #9ca3af;
+  }
+
+  /* Recovery pose (hand on hip, blue shirt) */
+  .coach-avatar[data-pose="recovery"]{
+    --px:
+      /* head */
+      20px 8px 0 #e5e7eb, 24px 8px 0 #e5e7eb, 28px 8px 0 #e5e7eb,
+      20px 12px 0 #e5e7eb,24px 12px 0 #e5e7eb,28px 12px 0 #e5e7eb,
+      16px 8px 0 #111827, 32px 8px 0 #111827,
+      /* body blue */
+      20px 16px 0 #38bdf8, 24px 16px 0 #38bdf8, 28px 16px 0 #38bdf8,
+      20px 20px 0 #38bdf8, 24px 20px 0 #38bdf8, 28px 20px 0 #38bdf8,
+      20px 24px 0 #38bdf8, 24px 24px 0 #38bdf8, 28px 24px 0 #38bdf8,
+      /* one arm down, one on hip */
+      12px 24px 0 #e5e7eb, 12px 28px 0 #e5e7eb,
+      32px 24px 0 #e5e7eb, 28px 24px 0 #e5e7eb,
+      /* legs/shoes */
+      20px 32px 0 #111827, 28px 32px 0 #111827,
+      20px 36px 0 #111827, 28px 36px 0 #111827,
+      16px 40px 0 #9ca3af, 20px 40px 0 #9ca3af,
+      28px 40px 0 #9ca3af, 32px 40px 0 #9ca3af;
+  }
+
+  /* Motivating pose (purple shirt, fist pump) */
+  .coach-avatar[data-pose="motivating"]{
+    --px:
+      /* head */
+      20px 8px 0 #e5e7eb, 24px 8px 0 #e5e7eb, 28px 8px 0 #e5e7eb,
+      20px 12px 0 #e5e7eb,24px 12px 0 #e5e7eb,28px 12px 0 #e5e7eb,
+      16px 8px 0 #111827, 32px 8px 0 #111827,
+      /* body purple */
+      20px 16px 0 #a855f7, 24px 16px 0 #a855f7, 28px 16px 0 #a855f7,
+      20px 20px 0 #a855f7, 24px 20px 0 #a855f7, 28px 20px 0 #a855f7,
+      20px 24px 0 #a855f7, 24px 24px 0 #a855f7, 28px 24px 0 #a855f7,
+      /* fist pump */
+      36px 12px 0 #e5e7eb, 36px 16px 0 #e5e7eb,
+      32px 20px 0 #e5e7eb,
+      /* legs/shoes */
+      20px 32px 0 #111827, 28px 32px 0 #111827,
+      20px 36px 0 #111827, 28px 36px 0 #111827,
+      16px 40px 0 #9ca3af, 20px 40px 0 #9ca3af,
+      28px 40px 0 #9ca3af, 32px 40px 0 #9ca3af;
+  }
+  /* Make Coach Dwayne span full dashboard width */
+  .wide-coach {
+    margin-bottom: 28px;
+  }
+
+  .wide-coach .coach-top {
+    align-items: center;
+  }
+
+  /* Bigger presence */
+  .wide-coach .coach-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .wide-coach .coach-talk {
+    flex: 1 1 auto;        /* IMPORTANT: fill remaining space */
+    min-width: 0;          /* prevents overflow issues */
+    max-width: none;       /* remove any max constraint */  
+  }
+
+  /* Slightly larger text since he's the main narrator */
+  .wide-coach .coach-text {
+    font-size: 1.05rem;
+  }
+
+  .wide-coach .coach-title {
+    font-size: 1.1rem;
+  }
+
+  .coach-title{
+    margin-top: 2px;
+    margin-bottom: 6px;
+    font-size: 1.15rem;
+    line-height: 1.2;
+  }
+
+  .coach-text{
+    font-size: 1.05rem;
+    line-height: 1.35;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .coach-tip{
+    margin-top: 8px;
+    font-size: 0.95rem;
+  }
 </style>
 
 </head>
@@ -562,7 +884,20 @@
 
       <div class="projects" style="padding-top: 40px;">
           <div class="container">
+            <div class="coach-card wide-coach" id="coach-card">
+              <div class="coach-top">
+                <div class="coach-avatar" id="dwayne-avatar" data-pose="neutral" aria-hidden="true"></div>
 
+                <div class="coach-talk">
+                  <div class="coach-name">💪 Coach Dwayne</div>
+                  <div id="dwayne-title" class="coach-title">Loading…</div>
+                  <div id="dwayne-text" class="coach-text">
+                    Reading your training history…
+                  </div>
+                  <div id="dwayne-tip" class="coach-tip"></div>
+                </div>
+              </div>
+            </div>
             <div class="today-row">
               <div class="today-main">
                 <div class="today-card {% if not today_rows %}today-card-rest{% endif %}">
@@ -605,6 +940,7 @@
               </div>
 
                     <div class="today-reactions">
+
                       <p class="reactions-title">
                         How does my workout feel to you?
                       </p>
