@@ -125,7 +125,7 @@ def build_coach_message(
 
     # ---- Cross-year (existence/timing only) ----
     if today_md is None:
-        md_today = _md_index(date.today())
+        md_today = int(today_md) if today_md is not None else _md_index(date.today())
     else:
         md_today = int(today_md)
 
