@@ -234,8 +234,8 @@ def build_coach_message(
         title = "Pattern shift"
         focus = "Consistency"
         core = (
-            f"I’m seeing a noticeable change in your recent pattern."
-            f" Keep it steady and you’ll adapt faster."
+            "I’m seeing a noticeable change in your recent pattern."
+            " Keep it steady and you’ll adapt faster."
         )
 
     else:

@@ -1,5 +1,6 @@
-import os, time
-from datetime import date as _date, datetime as _dt, timedelta
+import os
+import time
+from datetime import date as _date
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
