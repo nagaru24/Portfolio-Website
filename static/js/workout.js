@@ -321,7 +321,7 @@
         animation: { duration: 250 },
         plugins: {
           legend: {
-            display: false   // ✅ hide "Workout days"
+            display: false   // hide "Workout days"
           }
         }
       }
@@ -416,7 +416,7 @@
 
     } catch (e) {
       titleEl.textContent = "Coach offline";
-      textEl.textContent = "I couldn’t load right now — but I’m still rooting for you. 💪";
+      textEl.textContent = "I couldn’t load right now — but I’m still rooting for you.";
       tipEl.textContent = "";
       avatar.setAttribute("data-pose", "neutral");
     }

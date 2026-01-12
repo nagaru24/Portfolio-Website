@@ -571,36 +571,6 @@
     animation: dwayne-walk 10s linear infinite;
   }
 
-  /* Walk across the Today card */
-  @keyframes dwayne-walk {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(420px); }
-  }
-
-  /* Speech bubble */
-  .dwayne-bubble {
-    position: absolute;
-    left: 36px;
-    top: 0;
-    max-width: 520px;
-    padding: 10px 12px;
-    border-radius: 14px;
-    background: rgba(2, 6, 23, 0.92);
-    border: 1px solid rgba(148, 163, 184, 0.5);
-    box-shadow: 0 10px 25px rgba(2, 6, 23, 0.5);
-  }
-
-  .dwayne-bubble::before {
-    content: "";
-    position: absolute;
-    left: -8px;
-    top: 16px;
-    width: 0; height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid rgba(2, 6, 23, 0.92);
-  }
-
   .dwayne-name {
     font-size: 0.85rem;
     font-weight: 700;
@@ -889,7 +859,7 @@
                 <div class="coach-avatar" id="dwayne-avatar" data-pose="neutral" aria-hidden="true"></div>
 
                 <div class="coach-talk">
-                  <div class="coach-name">💪 Coach Dwayne</div>
+                  <div class="coach-name">Coach Dwayne</div>
                   <div id="dwayne-title" class="coach-title">Loading…</div>
                   <div id="dwayne-text" class="coach-text">
                     Reading your training history…
@@ -954,7 +924,7 @@
                                     class="react-btn react-btn-positive"
                                     style="--fill: {{ reaction_fill['great'] }}">
                               <span class="react-fill"></span>
-                              <span class="react-label">You did a great job today ✨</span>
+                              <span class="react-label">You did a great job today!!</span>
                             </button>
                           </form>
 
@@ -965,7 +935,7 @@
                                     class="react-btn react-btn-push"
                                     style="--fill: {{ reaction_fill['push'] }}">
                               <span class="react-fill"></span>
-                              <span class="react-label">Not enough… push your limits further 💪</span>
+                              <span class="react-label">Not enough… push your limits further</span>
                             </button>
                           </form>
                         {% else %}
@@ -976,7 +946,7 @@
                                     class="react-btn react-btn-positive"
                                     style="--fill: {{ reaction_fill['rest'] }}">
                               <span class="react-fill"></span>
-                              <span class="react-label">Take a well-earned rest day 😌</span>
+                              <span class="react-label">Take a well-earned rest day</span>
                             </button>
                           </form>
 
@@ -986,7 +956,7 @@
                                     class="react-btn react-btn-tease"
                                     style="--fill: {{ reaction_fill['lazy'] }}">
                               <span class="react-fill"></span>
-                              <span class="react-label">Lazy? or just pretending it’s recovery? 😏</span>
+                              <span class="react-label">Lazy? or just pretending it’s recovery??</span>
                             </button>
                           </form>
                         {% endif %}
@@ -1011,10 +981,10 @@
 
                         <div class="feedback-message">
                           <p id="feedback-thanks" class="reaction-thanks">
-                            Thanks for sharing your thoughts 🙌
+                            Thanks for sharing your thoughts
                           </p>
                           <p id="feedback-empty" class="reaction-thanks" style="color:#dc2626;">
-                            Please write something before submitting 📝
+                            Please write something before submitting
                           </p>
                         </div>
 

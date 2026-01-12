@@ -199,14 +199,14 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (response.ok) {
-                alert('✅ Thank you for reaching out! Your message has been sent.');
+                alert('Thank you for reaching out! Your message has been sent.');
                 contactForm.reset();
             } else {
-                alert('❗ Something went wrong. Please try again.');
+                alert('Something went wrong. Please try again.');
             }
         })
         .catch(() => {
-            alert('❗ Network error. Please try again.');
+            alert('Network error. Please try again.');
         })
         .finally(() => {
             submitBtn.textContent = 'Send Message';
