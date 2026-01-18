@@ -92,6 +92,92 @@
     padding-bottom: 0;
     }
 
+    /* Panda Quotes Slideshow */
+    .panda-quotes{
+      margin: 28px auto 64px;
+      width: 100%;
+      max-width: 760px; 
+      box-sizing: border-box;
+    }
+
+    .panda-title {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panda-slider {
+      display: grid;
+      gap: 12px;
+    }
+
+    .panda-quote {
+      min-height: 72px;
+      font-size: 1rem;
+      line-height: 1.7;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #f7f7fb;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: opacity 220ms ease, transform 220ms ease;
+      text-align: center; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panda-quote.fade-out {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+
+    .panda-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panda-btn {
+      border: none;
+      background: #111;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panda-btn:hover {
+      opacity: 0.9;
+    }
+
+    .panda-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .panda-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #c9c9d6;
+      cursor: pointer;
+    }
+
+    .panda-dot.active {
+      background: #6a5acd;
+    }
+
   </style>
 </head>
 
@@ -158,19 +244,19 @@
           </div>
           <div class="accordion-content">
             <ul>
-              <li><b>AI Linguistic Associate</b>, SIGMA AI</li>
-                <ul>
-                  <li>Jun 2025 - Present</li>
-                  <li>Collaborate on multilingual AI training projects to enhance machine learning systems.</li>
-                  <li>Ensure high data quality by performing linguistic validation and correct use of metadata tags.</li>
-                  <li>Work cross-functionally with project managers and linguistic teams to meet tight deadlines.</li>
-                </ul>
               <li><b>Injury Prevention & Care</b>, University of Nebraska at Omaha</li>
                 <ul>
-                  <li>Sep 2024 - Present</li>
+                  <li>Sep 2024 - Dec 2025</li>
                   <li>Provide evidence-based injury management while fostering a supportive recovery environment.</li>
                   <li>Prioritize patient well-being through individualized treatment and injury prevention strategies.</li>
                   <li>Recognized as <b>Employee of the Month</b> (November 2024) for dedication and excellence in patient care.</li>
+                </ul>
+              <li><b>AI Linguistic Associate</b>, SIGMA AI</li>
+                <ul>
+                  <li>Jun 2025 - Sep 2025</li>
+                  <li>Collaborate on multilingual AI training projects to enhance machine learning systems.</li>
+                  <li>Ensure high data quality by performing linguistic validation and correct use of metadata tags.</li>
+                  <li>Work cross-functionally with project managers and linguistic teams to meet tight deadlines.</li>
                 </ul>
               <li><b>Versatile Event Operation Specialist</b>, Shimizu Service</li>
                 <ul>
@@ -205,6 +291,35 @@
             </ul>
           </div>
         </div>
+
+        <!-- Panda Quotes (slideshow) -->
+        <div class="panda-quotes">
+          <h2 class="panda-title">
+            <i class="fa-solid fa-quote-left"></i>
+            My Panda Quotes
+          </h2>
+
+          <div class="panda-slider" aria-live="polite">
+            <div class="panda-quote" id="pandaQuote"></div>
+
+            <div class="panda-controls">
+              <button type="button" class="panda-btn" id="pandaPrev" aria-label="Previous quote">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+
+              <div class="panda-dots" id="pandaDots" aria-label="Quote dots"></div>
+
+              <button type="button" class="panda-btn" id="pandaNext" aria-label="Next quote">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+
+              <div class="panda-meta">
+                <span id="pandaIndex">1 / 1</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
 
   <!-- Footer (copy from index.html) -->
@@ -213,6 +328,73 @@
       <p>&copy; 2026 Nagaru Okawa. All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      const quotes = [
+        "“You will soon gain something you have always desired.”",
+        "“Take a trip with a friend.”",
+        "“Take time to relax.”",
+        "“The strength of your character will bring serenity.”",
+        "“Say yes.”",
+        "“Your dream will become reality.”"
+      ];
+
+      const quoteEl = document.getElementById("pandaQuote");
+      const dotsEl = document.getElementById("pandaDots");
+      const indexEl = document.getElementById("pandaIndex");
+      const prevBtn = document.getElementById("pandaPrev");
+      const nextBtn = document.getElementById("pandaNext");
+
+      if (!quoteEl || !dotsEl || !indexEl || !prevBtn || !nextBtn) return;
+
+      let i = 0;
+      let timer = null;
+
+      function renderDots() {
+        dotsEl.innerHTML = "";
+        quotes.forEach((_, idx) => {
+          const dot = document.createElement("span");
+          dot.className = "panda-dot" + (idx === i ? " active" : "");
+          dot.addEventListener("click", () => show(idx, true));
+          dotsEl.appendChild(dot);
+        });
+      }
+
+      function renderIndex() {
+        indexEl.textContent = `${i + 1} / ${quotes.length}`;
+      }
+
+      function show(nextIndex, userAction=false) {
+        i = (nextIndex + quotes.length) % quotes.length;
+
+        // small fade animation
+        quoteEl.classList.add("fade-out");
+        setTimeout(() => {
+          quoteEl.textContent = quotes[i];
+          quoteEl.classList.remove("fade-out");
+          renderDots();
+          renderIndex();
+        }, 180);
+
+        if (userAction) restartAuto();
+      }
+
+      function restartAuto() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => show(i + 1), 4500);
+      }
+
+      prevBtn.addEventListener("click", () => show(i - 1, true));
+      nextBtn.addEventListener("click", () => show(i + 1, true));
+
+      // init
+      quoteEl.textContent = quotes[i];
+      renderDots();
+      renderIndex();
+      restartAuto();
+    })();
+  </script>
 
   <script src="static/js/script.js"></script>
 
