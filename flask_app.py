@@ -1,5 +1,5 @@
 import os
-from blog_utils import load_posts, get_post_by_slug
+from blog_utils import load_posts # , get_post_by_slug
 from flask import abort
 
 # Load .env locally (safe in prod too; it will just do nothing if .env doesn't exist)
