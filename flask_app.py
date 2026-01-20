@@ -1,4 +1,6 @@
 import os
+from blog_utils import load_posts, get_post_by_slug
+from flask import abort
 
 # Load .env locally (safe in prod too; it will just do nothing if .env doesn't exist)
 try:
@@ -643,3 +645,27 @@ def api_workout_coach():
         today_year=today.year,
         today_md=(today.month * 100 + today.day),
     ))
+
+@app.route("/blog")
+def blog_index():
+    posts = load_posts()
+    return render_template("blog_index.html", posts=posts)
+
+@app.route("/blog/<slug>")
+def blog_post(slug: str):
+    posts = load_posts()
+    post = next((p for p in posts if p.slug == slug), None)
+    if not post:
+        abort(404)
+
+    i = next((idx for idx, p in enumerate(posts) if p.slug == slug), None)
+
+    newer_post = posts[i - 1] if i is not None and i > 0 else None
+    older_post = posts[i + 1] if i is not None and i < len(posts) - 1 else None
+
+    return render_template(
+        "blog_post.html",
+        post=post,
+        newer_post=newer_post,
+        older_post=older_post,
+    )
