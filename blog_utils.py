@@ -5,10 +5,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
-import frontmatter
 import markdown
 
-POSTS_DIR = Path("posts")
+try:
+    import frontmatter
+except ModuleNotFoundError:
+    frontmatter = None
+
+BASE_DIR = Path(__file__).resolve().parent
+POSTS_DIR = BASE_DIR / "posts"
 
 
 @dataclass
@@ -24,6 +29,9 @@ class BlogPost:
 
 
 def load_posts() -> List[BlogPost]:
+    if frontmatter is None:
+        return []
+
     posts: List[BlogPost] = []
 
     if not POSTS_DIR.exists():
@@ -48,7 +56,7 @@ def load_posts() -> List[BlogPost]:
 
         date_str = dt.strftime("%b %d, %Y")
 
-        html = markdown.markdown(
+        body_html = markdown.markdown(
             fm.content,
             extensions=["fenced_code", "tables", "toc"],
             output_format="html5",
@@ -63,7 +71,7 @@ def load_posts() -> List[BlogPost]:
                 tags=list(tags) if isinstance(tags, (list, tuple)) else [str(tags)],
                 summary=summary,
                 cover=str(cover) if cover else None,
-                html=html,
+                html=body_html,
             )
         )
 
