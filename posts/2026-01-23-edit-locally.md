@@ -13,7 +13,7 @@ summary: "自分のパソコンで安全に編集する"
 <br>
 今回は自分のパソコンのVS CodeでWeb Appのコード編集するための環境設定方法をまとめたいと思います。  
 ワークフローとしては、ローカルマシンで編集/テスト → GitHubのレポにプッシュ → PythonAnywhereにプル/リロード、といった感じです。  
-<br>
+<br><br>
 
 ## VS Code
 1. プロジェクトフォルダを作成し、既存のアプリケーションファイルを入れる。  
@@ -49,5 +49,5 @@ GitHubのレポから持ってくる場合は、<a href="https://download-direct
 `cd ~/your-repo`  
 `git pull`  
 もしうまくいかなければ、statusチェックやリセットを試みて、再度pull。  
-`git status` →　`git log -1`  
+`git status` → `git log -1`  
 `git reset --hard HEAD` → `git clean -fd`
