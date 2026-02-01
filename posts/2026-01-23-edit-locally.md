@@ -8,7 +8,7 @@ summary: "自分のパソコンで安全に編集する"
 
 <br>
 このWebsiteは件の<a href="https://nagaru24k.pythonanywhere.com/workout" target="_blank" rel="noopener noreferrer">Workout Dashboard</a>も含めて、PythonAnywhereのサーバーで運営されています。  
-月一でログインすれば無料で使えますが、限られたFile Storageでやりくりしないといけません。  
+月一でログインすれば無料で使えますが、限られたディスク容量でやりくりしないといけません。  
 今後このブログやテックノートを続けていったり、同じレポにアプリを作ったりしていけば、近い将来、必ずhit the limitしてしまいます。無料で使えるよさげなデプロイ先をご存じでしたら、ぜひ教えてください。  
 <br>
 今回は自分のパソコンのVS CodeでWeb Appのコード編集するための環境設定方法をまとめたいと思います。  
