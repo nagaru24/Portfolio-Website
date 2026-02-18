@@ -20,12 +20,11 @@ from ai_coach import build_coach_message
 
 print("GOOGLE_APPLICATION_CREDENTIALS =", os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 
-OMAHA_TZ = pytz.timezone("America/Chicago")
+Local_TZ = pytz.timezone("America/New_York")
 
 
-def _today_omaha():
-    """Return today's date in Omaha (America/Chicago) time."""
-    return _dt.now(OMAHA_TZ).date()
+def _today_local():
+    return _dt.now(Local_TZ).date()
 
 def _get_year_arg(default=2025) -> int:
     y = (request.args.get("year") or str(default)).strip()
@@ -98,7 +97,7 @@ def workout():
 
     # ----- today's workout rows -----
     today_rows = []
-    today = _today_omaha()
+    today = _today_local()
     today_date_label = today.strftime("%b %d, %Y")
 
     # selected year for charts
@@ -159,7 +158,7 @@ def workout_react():
         # Return a small error payload instead of redirect
         return jsonify({"ok": False, "error": "invalid_reaction"}), 400
 
-    today = _today_omaha().isoformat()
+    today = _today_local().isoformat()
     csv_path = os.path.join(BASE_DIR, "workout_reactions.csv")
 
     # --- 1) compute counts for today (before adding this vote) ---
@@ -201,7 +200,7 @@ def workout_feedback():
     if not msg:
         return redirect(url_for("workout"))
 
-    today = _today_omaha().isoformat()
+    today = _today_local().isoformat()
     csv_path = os.path.join(BASE_DIR, "workout_feedback.csv")
     file_exists = os.path.isfile(csv_path)
 
@@ -639,7 +638,7 @@ def api_workout_anomalies():
 @app.get("/api/workout/coach")
 def api_workout_coach():
     selected_year = _get_year_arg(2025)
-    today = _today_omaha()
+    today = _today_local()
     return jsonify(build_coach_message(
         selected_year,
         today_year=today.year,
