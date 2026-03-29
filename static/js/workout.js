@@ -28,7 +28,7 @@
     if (el && el.value) return el.value;
 
     const bodyYear = document.body.dataset.year;
-    return bodyYear ? bodyYear.toString() : "2025";
+    return bodyYear ? bodyYear.toString() : "2026";
  }
 
   // Build API URL safely (never string-concat query params)

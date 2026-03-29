@@ -115,7 +115,7 @@ def _fetch_rows(year: int):
         rows.append(rec)
     return rows
 
-def get_rows(year: int = 2025):
+def get_rows(year: int = 2026):
     year = int(year)
     now = time.time()
     entry = _CACHE.get(year)
@@ -126,7 +126,7 @@ def get_rows(year: int = 2025):
 
     return _CACHE[year]["rows"]
 
-def unique_exercises(year: int = 2025):
+def unique_exercises(year: int = 2026):
     seen = set()
     for r in get_rows(year):
         ex = (r.get("exercise") or "").strip()
@@ -134,7 +134,7 @@ def unique_exercises(year: int = 2025):
             seen.add(ex)
     return sorted(seen)
 
-def unique_muscle_groups(year: int = 2025):
+def unique_muscle_groups(year: int = 2026):
     seen = set()
     for r in get_rows(year):
         mg = (r.get("muscle_group") or "").strip()

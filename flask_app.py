@@ -26,7 +26,7 @@ Local_TZ = pytz.timezone("America/New_York")
 def _today_local():
     return _dt.now(Local_TZ).date()
 
-def _get_year_arg(default=2025) -> int:
+def _get_year_arg(default=2026) -> int:
     y = (request.args.get("year") or str(default)).strip()
     try:
         y = int(y)
@@ -87,7 +87,7 @@ def contact():
 # -----------------------------
 @app.route("/workout")
 def workout():
-    year = _get_year_arg(2025)
+    year = _get_year_arg(2026)
 
     try:
         exs = unique_exercises(year)
@@ -101,7 +101,7 @@ def workout():
     today_date_label = today.strftime("%b %d, %Y")
 
     # selected year for charts
-    year = _get_year_arg(2025)
+    year = _get_year_arg(2026)
 
     # year for "Today" panel (always current year if possible)
     today_year = today.year  # 2026 now, 2027 later
@@ -282,7 +282,7 @@ def _ensure_row_normalized(r):
 
     return r
 
-def _filter_rows(muscle=None, exercise=None, year: int = 2025):
+def _filter_rows(muscle=None, exercise=None, year: int = 2026):
     # Normalize incoming filters: treat "", "All" as no filter
     m = _norm(muscle)
     e = _norm(exercise)
@@ -367,7 +367,7 @@ def api_workout_options():
     Used to populate per-chart exercise dropdowns.
     """
     try:
-        year = _get_year_arg(2025)
+        year = _get_year_arg(2026)
         rows = [dict(r) for r in get_rows(year)]
     except Exception:
         rows = []
@@ -407,7 +407,7 @@ def api_workout_group_series():
         return abort(400, "muscle is required")
 
     try:
-        year = _get_year_arg(2025)
+        year = _get_year_arg(2026)
         rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
     except Exception:
         rows = []
@@ -508,7 +508,7 @@ def api_workout_progress_by_group():
 
     exercise = request.args.get("exercise")  # may be None / "All"
     try:
-        year = _get_year_arg(2025)
+        year = _get_year_arg(2026)
         rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
     except Exception:
         rows = []
@@ -544,7 +544,7 @@ def api_workout_volume():
     # I keep 'period' param for flexibility, but front-end will always send 'W' (weekly)
     period = (request.args.get("period") or "W").upper()  # 'W' or 'M'
     muscle = request.args.get("muscle")
-    year = _get_year_arg(2025)
+    year = _get_year_arg(2026)
     rows = _filter_rows(muscle=muscle, exercise=None, year=year)
 
     if period == "M":
@@ -561,7 +561,7 @@ def api_workout_frequency():
     period = (request.args.get("period") or "W").upper()
 
     try:
-        year = _get_year_arg(2025)
+        year = _get_year_arg(2026)
         rows = [_ensure_row_normalized(dict(r)) for r in get_rows(year)]
     except Exception:
         rows = []
@@ -594,7 +594,7 @@ def api_workout_frequency():
 
 @app.route("/api/workout/anomalies")
 def api_workout_anomalies():
-    year = _get_year_arg(2025)
+    year = _get_year_arg(2026)
 
     # optional knobs (safe defaults)
     try:
@@ -637,7 +637,7 @@ def api_workout_anomalies():
 
 @app.get("/api/workout/coach")
 def api_workout_coach():
-    selected_year = _get_year_arg(2025)
+    selected_year = _get_year_arg(2026)
     today = _today_local()
     return jsonify(build_coach_message(
         selected_year,
