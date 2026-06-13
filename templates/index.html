@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="OOEQG9lC03dL9_e596yLcPW2_GuSouqTMflDFro2gGs" />
+    <title>Nagaru Okawa</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">
+                <img src="static/images/logo.png" alt="Nagaru.O Logo" class="logo-img">
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#projects" class="nav-link">Projects</a></li>
+                <li class="nav-item"><a href="blog" class="nav-link">Blog</a></li>
+                <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="highlight">Nagaru Okawa</span>
+                </h1>
+                <p class="hero-subtitle">
+                    A passionate IT explorer creating amazing digital experiences
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="profile-circle">
+                    <img src="static/images/Profile.png?v=2" alt="My photo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I'm a dedicated and skilled IT Associate at TTS US with a passion for creating innovative solutions and beautiful user experiences.
+                        With expertise in modern technologies, I bring ideas to life through clean,
+                        efficient code and thoughtful design.
+                    </p>
+                    <p>
+                        When I'm not coding, you can find me exploring new technologies, contributing to open-source projects,
+                        and continuously learning to stay at this ever-evolving IT field.
+                    </p>
+                    <div class="about-buttons">
+                        <a href="https://nagaru24k.pythonanywhere.com/more-about" class="btn btn-primary">More About Me</a>
+                        <a href="https://nagaru24k.pythonanywhere.com/resume" class="btn btn-secondary" style="margin-top: 1rem;">Full Resume</a>
+                    </div>
+                </div>
+                <div class="skills">
+                    <h3>Skills & Technologies</h3>
+                    <div class="skills-grid">
+                        <div class="skill-item"><i class="fab fa-python"></i><span>Python</span></div>
+                        <div class="skill-item"><i class="fab fa-js"></i><span>JavaScript</span></div>
+                        <div class="skill-item"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                        <div class="skill-item"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                        <div class="skill-item"><i class="fab fa-react"></i><span>React</span></div>
+                        <div class="skill-item"><i class="fab fa-git-alt"></i><span>Git</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Apps</button>
+                <button class="filter-btn" data-filter="AV/VR">AV/VR</button>
+                <button class="filter-btn" data-filter="Fun">Fun</button>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-category="Fun">
+                    <div class="project-image">
+                        <img src="static/images/Workout.png" alt="Workout dashboard image">
+                    </div>
+                    <div class="project-content">
+                        <h3>
+                            My Workout Dashboard
+                            <span class="pin-text">★ Featured</span>
+                        </h3>
+                        <p>A user-interactive app that connects to Google Sheets to visualize workout data with functions built using TypeScript and Chart.js.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">Flask</span>
+                            <span class="tech-tag">Google Sheets API</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://nagaru24k.pythonanywhere.com/workout"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            <a href="https://docs.google.com/spreadsheets/d/1xi7PSpu7m2rh8rTSXYAGCGy7g2k19vC2uKgehDunjuk/edit?gid=0#gid=0"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-google"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="web">
+                    <div class="project-image">
+                        <img src="static/images/Internal Feedback System.png" alt="Internal Feedback System image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Internal Feedback System</h3>
+                        <p>A web application to collect and analyze restaurant customer feedback using structured forms and database storage.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">MySQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/nagaru24/Internal-Feedback-System"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="web">
+                    <div class="project-image">
+                        <img src="static/images/Products Ordering System.png" alt="Products Ordering System image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Products Ordering System</h3>
+                        <p>A Django-based platform for managing online products orders with a streamlined customer interface and admin dashboard.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Django</span>
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">SQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/nagaru24/Products-Ordering-System"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="AV/VR">
+                    <div class="project-image">
+                        <img src="static/images/AV Desk.png" alt="Virtual Study Desk image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Virtual Study Desk</h3>
+                        <p>An interactive 3D workspace in Unity with Blender models.</p>
+                        <p>The left YT video below is my poster presentation, and the right one is the short demo.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Blender</span>
+                            <span class="tech-tag">3D Modeling</span>
+                            <span class="tech-tag">Unity</span>
+                            <span class="tech-tag">AR/VR/AV Development</span>
+                            <span class="tech-tag">C#</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://youtu.be/4v0Uk3Xi8L4"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="https://youtu.be/0K1PiL24i0o"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="Fun">
+                    <div class="project-image">
+                        <img src="static/images/FP Tracker.png" alt="Food Pantry Tracker image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Food Pantry Tracker</h3>
+                        <p>A Python app to track food inventory and donations for a university pantry.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">PyQt6</span>
+                            <span class="tech-tag">GUI</span>
+                            <span class="tech-tag">MVC</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/nagaru24/Project-2-Food-Tracker-"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://youtu.be/EwYePqXuKl0"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="web">
+                    <div class="project-image">
+                        <img src="static/images/Portfolio.png" alt="Internal Feedback System image">
+                    </div>
+                    <div class="project-content">
+                        <h3>Portfolio Website</h3>
+                        <p>This personal portfolio website built with a Flask app, showcasing my projects and providing a functional contact form for visitors to reach out.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">Flask</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/nagaru24/Portfolio-Website"
+                            class="project-link" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let's work together</h3>
+                    <p>
+                        I'm always interested in new opportunities and exciting projects.
+                        Whether you have a question or just want to say hello, feel free to reach out to me!
+                    </p>
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:uranus24k@gmail.com">uranus24k@gmail.com</a>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fab fa-linkedin"></i>
+                            <a href="https://www.linkedin.com/in/nagaru-okawa-005296342" target="_blank">Nagaru Okawa</a>
+                        </div>
+                        <div class="contact-method">
+                            <i class="fab fa-github"></i>
+                            <a href="https://github.com/nagaru24" target="_blank">nagaru24</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For now action="#" -->
+                <form class="contact-form" id="contact-form" method="POST" action="/contact">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Nagaru Okawa. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="static/js/script.js"></script>
+
+</body>
+</html>

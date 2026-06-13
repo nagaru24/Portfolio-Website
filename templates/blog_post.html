@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ post.title }} | Nagaru Okawa</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    .post-wrap { max-width: 900px; margin: 0 auto; }
+    .post-meta { display:flex; justify-content:space-between; gap:12px; align-items:center; flex-wrap:wrap; opacity:.85; padding-top: 15px; }
+    .post-tags { display:flex; gap:8px; flex-wrap:wrap; }
+    .tag { font-size:.78rem; padding:4px 10px; border-radius:999px; border:1px solid rgba(148,163,184,.6); background:#0f172a; color:#e5e7eb; }
+    .post-body { margin-top: 18px; line-height: 1.85; }
+    .post-body img { max-width:100%; height:auto; border-radius: 12px; }
+    .post-body pre { overflow:auto; padding:14px; border-radius:12px; background: rgba(15, 23, 42, .9); color:#e5e7eb; }
+    .post-body code { padding: 2px 6px; border-radius: 8px; background: rgba(148,163,184,.15); }
+    .post-nav { margin-top: 28px; display: flex; justify-content: space-between; gap: 12px; }
+    .post-nav a { text-decoration: none; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(148,163,184,.6); background: #0f172a; color: #e5e7eb; font-size: .9rem; display: inline-flex; align-items: center; gap: 8px; }
+    .post-nav a:hover { opacity: .92; }
+    .post-nav .spacer { flex: 1; }
+  </style>
+</head>
+
+<body>
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <img src="/static/images/logo.png" alt="Nagaru.O Logo" class="logo-img">
+    </a>
+    <ul class="nav-menu">
+      <li class="nav-item"><a href="/#home" class="nav-link">Home</a></li>
+      <li class="nav-item"><a href="/#about" class="nav-link">About</a></li>
+      <li class="nav-item"><a href="/#projects" class="nav-link">Projects</a></li>
+      <li class="nav-item"><a href="/blog" class="nav-link">Blog</a></li>
+      <li class="nav-item"><a href="/#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="hamburger">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </div>
+  </div>
+</nav>
+
+<section class="about" style="padding-top: 110px;">
+  <div class="container post-wrap">
+    <a href="/blog" style="text-decoration:none; display:inline-block; margin-bottom:14px;">
+      ← Back to Blog
+    </a>
+
+    <h2 class="section-title" style="margin-bottom: 10px;">{{ post.title }}</h2>
+
+    <div class="post-meta">
+      <div>{{ post.date_str }}</div>
+      <div class="post-tags">
+        {% for t in post.tags %}
+          <span class="tag">{{ t }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if post.cover %}
+      <img src="{{ post.cover }}" alt="cover" style="margin-top:18px; border-radius:14px; width:100%; height:auto;">
+    {% endif %}
+
+    <div class="post-body">
+      {{ post.html | safe }}
+    </div>
+
+    <div class="post-nav">
+      {% if newer_post %}
+        <a href="/blog/{{ newer_post.slug }}">
+          <i class="fa-solid fa-chevron-left"></i>
+          Next
+        </a>
+      {% else %}
+        <span class="spacer"></span>
+      {% endif %}
+
+      {% if older_post %}
+        <a href="/blog/{{ older_post.slug }}">
+          Prev
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+      {% else %}
+        <span class="spacer"></span>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container"><p>&copy; 2026 Nagaru Okawa. All rights reserved.</p></div>
+</footer>
+
+<script src="/static/js/script.js"></script>
+</body>
+</html>

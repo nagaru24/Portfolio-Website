@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nagaru Okawa</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+    .resume-container {
+      max-width: 900px;
+      margin: 120px auto 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin: 0 auto 2rem auto;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #6a5acd, #7b68ee);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .download-btn:hover {
+      background: linear-gradient(90deg, #7b68ee, #6a5acd);
+    }
+
+    .accordion {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .accordion-header {
+      background: #f5f5f5;
+      cursor: pointer;
+      padding: 15px 20px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+
+    .accordion-header:hover {
+      background: #eaeaea;
+    }
+
+    .accordion-header i {
+      transition: transform 0.3s;
+    }
+
+    .accordion-content {
+      display: none;
+      padding: 20px;
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    .accordion-content ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .accordion-content ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .accordion.active .accordion-content {
+      display: block;
+    }
+
+    .accordion.active .accordion-header i {
+      transform: rotate(180deg);
+    }
+
+    .about {
+    padding-bottom: 0;
+    }
+
+    /* Panda Quotes Slideshow */
+    .panda-quotes{
+      margin: 28px auto 64px;
+      width: 100%;
+      max-width: 760px; 
+      box-sizing: border-box;
+    }
+
+    .panda-title {
+      margin: 0 0 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panda-slider {
+      display: grid;
+      gap: 12px;
+    }
+
+    .panda-quote {
+      min-height: 72px;
+      font-size: 1rem;
+      line-height: 1.7;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #f7f7fb;
+      border: 1px solid rgba(0,0,0,0.06);
+      transition: opacity 220ms ease, transform 220ms ease;
+      text-align: center; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panda-quote.fade-out {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+
+    .panda-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .panda-btn {
+      border: none;
+      background: #111;
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panda-btn:hover {
+      opacity: 0.9;
+    }
+
+    .panda-dots {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .panda-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #c9c9d6;
+      cursor: pointer;
+    }
+
+    .panda-dot.active {
+      background: #6a5acd;
+    }
+
+  </style>
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="https://nagaru24k.pythonanywhere.com" class="nav-logo">
+            <img src="static/images/logo.png" alt="Nagaru.O Logo" class="logo-img">
+        </a>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#home" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#about" class="nav-link">About</a></li>
+            <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#projects" class="nav-link">Projects</a></li>
+            <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/blog" class="nav-link">Blog</a></li>
+            <li class="nav-item"><a href="https://nagaru24k.pythonanywhere.com/#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </div>
+</nav>
+
+    <!-- Main Content -->
+    <section class="about">
+      <div class="container">
+        <h1 class="section-title">Full Resume</h1>
+        <a href="static/Nagaru Okawa.pdf" class="download-btn" download>
+          <i class="fas fa-download"></i> Download PDF
+        </a>
+
+        <!-- Accordion Sections -->
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>Education</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><b>University of Nebraska at Omaha</b> — B.S. in Management Information Systems</li>
+                <ul>
+                  <li>Aug 2023 - Dec 2025</li>
+                  <li>Cumulative GPA: 3.93</li>
+                  <li>Develop technical problem-solving skills to enhance business operations.</li>
+                  <li>Gain expertise in enterprise systems, database management, and IT project coordination.</li>
+                  <li>Strengthen business-tech alignment by analyzing and optimizing organizational processes.</li>
+                  <li>Graduated as Magna cum laude <b>honors student</b></li>
+                </ul>
+              <li><b>Juntendo University, Japan</b> — B.S. in Sports Science with focus on Biomechanics</li>
+                <ul>
+                  <li>Apr 2019 - Mar 2023</li>
+                  <li>Cumulative GPA: 3.71</li>
+                  <li>Worked closely with professors and mentors, refining expertise in sports education.</li>
+                  <li>Earned a teaching license in Japan, qualifying to teach physical education.</li>
+                  <li>Completed a senior thesis, applying research and analytical skills in biomechanics.</li>
+                </ul>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>Work Experience</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><b>IT Associate</b>, Toyota Tsusho Systems US</li>
+                <ul>
+                  <li>Mar 2026 - Present</li>
+                  <li>I am looking foward to working at TTS!</li>
+                </ul>
+              <li><b>Injury Prevention & Care</b>, University of Nebraska at Omaha</li>
+                <ul>
+                  <li>Sep 2024 - Dec 2025</li>
+                  <li>Provide evidence-based injury management while fostering a supportive recovery environment.</li>
+                  <li>Prioritize patient well-being through individualized treatment and injury prevention strategies.</li>
+                  <li>Recognized as <b>Employee of the Month</b> (November 2024) for dedication and excellence in patient care.</li>
+                </ul>
+              <li><b>AI Linguistic Associate</b>, SIGMA AI</li>
+                <ul>
+                  <li>Jun 2025 - Sep 2025</li>
+                  <li>Collaborate on multilingual AI training projects to enhance machine learning systems.</li>
+                  <li>Ensure high data quality by performing linguistic validation and correct use of metadata tags.</li>
+                  <li>Work cross-functionally with project managers and linguistic teams to meet tight deadlines.</li>
+                </ul>
+              <li><b>Versatile Event Operation Specialist</b>, Shimizu Service</li>
+                <ul>
+                  <li>Sep 2020 - Jan 2023</li>
+                  <li>Supported high-profile events, including professional baseball games, concerts, and festivals.</li>
+                  <li>Managed security operations and event logistics, maintaining smooth event flow and safety.</li>
+                  <li>Demonstrated quick problem-solving and adaptability in high-pressure environments.</li>
+                </ul>
+              <li><b>Communication Employee</b>, AEON</li>
+                <ul>
+                  <li>Sep 2020 - Sep 2021</li>
+                  <li>Designed and managed a customer database to optimize sales strategies and improve customer engagement.</li>
+                  <li>Created marketing videos and digital content, supporting data-driven promotion of products and services.</li>
+                  <li>Applied data-oriented insights to align customer needs with effective solutions, enhancing user experience and business outcomes.</li>
+                </ul>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header">
+            <span>Skills</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="accordion-content">
+            <ul>
+              <li><b>Languages</b>: English (Pro Proficiency), Japanese (Native)</li>
+              <li><b>Computer Languages</b>: Python, JavaScript, HTML/CSS, SQL, Bash, C#</li>
+              <li><b>Frameworks & Tools</b>: Flask, React, Django, MySQL, PyCharm, PyQt6, Pytest, AWS, Linux/Windows, Unity, Blender</li>
+              <li><b>Other</b>: Data Analysis, Quantitative Research, System Admin, Cybersecurity, Database Management/Design, IT Infrastructure Management/Design, Git/GitHub, 3D Modeling, Video Editing, Cross-Cultural Communication</li>
+              <li><b>Certifications</b>: National Qualification for Information Technology Engineer (Japan), Teaching License in Japan (Physical Education), Adult and Pediatric First Aid/CPR/AED</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Panda Quotes (slideshow) -->
+        <div class="panda-quotes">
+          <h2 class="panda-title">
+            <i class="fa-solid fa-quote-left"></i>
+            My Panda Quotes
+          </h2>
+
+          <div class="panda-slider" aria-live="polite">
+            <div class="panda-quote" id="pandaQuote"></div>
+
+            <div class="panda-controls">
+              <button type="button" class="panda-btn" id="pandaPrev" aria-label="Previous quote">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+
+              <div class="panda-dots" id="pandaDots" aria-label="Quote dots"></div>
+
+              <button type="button" class="panda-btn" id="pandaNext" aria-label="Next quote">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+
+              <div class="panda-meta">
+                <span id="pandaIndex">1 / 1</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <!-- Footer (copy from index.html) -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Nagaru Okawa. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const quotes = [
+        "“You will soon gain something you have always desired.”",
+        "“Take a trip with a friend.”",
+        "“Take time to relax.”",
+        "“The strength of your character will bring serenity.”",
+        "“Say yes.”",
+        "“Your dream will become reality.”",
+        "“A stranger's kindness will surprise and delight you.”",
+        "“Begin new adventures with an open mind.”"
+      ];
+
+      const quoteEl = document.getElementById("pandaQuote");
+      const dotsEl = document.getElementById("pandaDots");
+      const indexEl = document.getElementById("pandaIndex");
+      const prevBtn = document.getElementById("pandaPrev");
+      const nextBtn = document.getElementById("pandaNext");
+
+      if (!quoteEl || !dotsEl || !indexEl || !prevBtn || !nextBtn) return;
+
+      let i = 0;
+      let timer = null;
+
+      function renderDots() {
+        dotsEl.innerHTML = "";
+        quotes.forEach((_, idx) => {
+          const dot = document.createElement("span");
+          dot.className = "panda-dot" + (idx === i ? " active" : "");
+          dot.addEventListener("click", () => show(idx, true));
+          dotsEl.appendChild(dot);
+        });
+      }
+
+      function renderIndex() {
+        indexEl.textContent = `${i + 1} / ${quotes.length}`;
+      }
+
+      function show(nextIndex, userAction=false) {
+        i = (nextIndex + quotes.length) % quotes.length;
+
+        // small fade animation
+        quoteEl.classList.add("fade-out");
+        setTimeout(() => {
+          quoteEl.textContent = quotes[i];
+          quoteEl.classList.remove("fade-out");
+          renderDots();
+          renderIndex();
+        }, 180);
+
+        if (userAction) restartAuto();
+      }
+
+      function restartAuto() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => show(i + 1), 4500);
+      }
+
+      prevBtn.addEventListener("click", () => show(i - 1, true));
+      nextBtn.addEventListener("click", () => show(i + 1, true));
+
+      // init
+      quoteEl.textContent = quotes[i];
+      renderDots();
+      renderIndex();
+      restartAuto();
+    })();
+  </script>
+
+  <script src="static/js/script.js"></script>
+
+</body>
+</html>
