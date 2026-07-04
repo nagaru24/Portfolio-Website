@@ -10,8 +10,17 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Git pull source code on PythonAnywhere
+        run: |
+          curl -X POST \
+            -H "Authorization: Token ${{ secrets.PA_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"command": "cd /home/${{ secrets.PA_USERNAME }}/Portfolio-Website && git pull origin main"}' \
+            "https://www.pythonanywhere.com/api/v0/user/${{ secrets.PA_USERNAME }}/consoles/shared_console_by_id/"
+
       - name: Reload PythonAnywhere web app
         run: |
           curl -X POST \
             -H "Authorization: Token ${{ secrets.PA_API_TOKEN }}" \
             "https://www.pythonanywhere.com/api/v0/user/${{ secrets.PA_USERNAME }}/webapps/${{ secrets.PA_DOMAIN }}/reload/"
+            
