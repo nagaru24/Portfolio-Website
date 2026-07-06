@@ -3,7 +3,7 @@ title: "アメリカの就活事情"
 date: "2026-01-22"
 tags: ["アメリカ", "就活", "LinkedIn", "リクルーター"]
 summary: "焦らず、学業に専念"
-cover: "/static/blog/2026-01-22/sunrise in CO.png"
+cover: "/static/blog/2026-01-22/sunrise in CO.webp"
 ---
 
 この写真はコロラドのロッキーマウンテンナショナルパークでの日の出になります。  
